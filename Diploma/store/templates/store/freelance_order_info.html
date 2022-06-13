@@ -1,0 +1,143 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% load filters %}
+
+{% block content %}
+    {% csrf_token %}
+    <br>
+
+    <div class="row">
+            <div class="col-md-10 m-auto">
+                <div class="box-element">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <img class="profilepic__image profilepic mb-2" style="display: block; margin-left: auto; margin-right: auto " src="{{ order.customer.image_url }}">
+                            <h5 class="m-auto text-center">{{ order.customer.name }}</h5>
+                        </div>
+                        <div class="col-sm-8">
+                            <h5>{{ order.name }}</h5>
+                            <hr />
+                            <div style="flex:2">{{ order.description }}</div>
+                        </div>
+                        <div class="col-sm text-right">
+                            <div class="mb-2" style="color:green">
+                                {% if item.premium %}
+                                    Premium
+                                {% else %}
+                                    Standard
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-3 text-info">${{ order.price }}</div>
+                            <div class="mb-3 text-secondary font-weight-light">{{ order.bet_set.count }} bet{% if order.bet_set.count != 1 %}s{% endif %}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+
+
+    <form id="order_form">
+    {% if not user|is_customer %}
+        <div class="row">
+            <div class="col-md-10 m-auto">
+                <div class="box-element">
+                    <h5>Your bet</h5>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <div class="form-group">
+                            <label for="description">Offer</label>
+                            <textarea class="form-control" rows="2" name="ftext" placeholder="Briefly describe why you should be chosen">{{ placed_bet.text|default:'' }}</textarea>
+                        </div>
+                        </div>
+                        <div class="col-sm">
+                            <div class="mb-3">
+                                  <label for="pfile" class="form-label">Your price ($)</label>
+                                  <input class="form-control" name="price" type="number" value="{{ placed_bet.price|default:'undefined' }}">
+                                </div>
+                        </div>
+                    </div>
+                    {% if placed_bet == None %}
+                        <input type="submit" id="submit" class="btn btn-outline-info  btn-sm btn-block" href="" value="Place a bet" />
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <br>
+    {% endif %}
+    </form>
+
+
+    <div class="row">
+        <div class="col-md-10 m-auto">
+            <div class="box-element">
+                <h5>Bets</h5>
+                {% for bet in order.bet_set.all %}
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <img class="profilepic__image profilepic betpic mb-2" style="display: block; margin-left: auto; margin-right: auto " src="{{ bet.composer.image_url }}">
+                            <h6 class="m-auto text-center">{{ bet.composer.name }}</h6>
+                        </div>
+                        <div class="col-sm-8">
+                            <p>{{ bet.text }}</p>
+                        </div>
+                        <div class="col-sm-2 text-right">
+                            <div class="mb-3 text-info">${{ bet.price }}</div>
+                            {% if user|is_customer %}
+                                <br>
+                                <input type="submit" onclick="chooseComposer({{ order.id }}, {{ bet.id }})" id="submit" class="btn btn-outline-info  btn-sm btn-block" href="" value="Choose" />
+                            {% endif %}
+                        </div>
+                    </div>
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <script>
+
+        let orderForm = document.getElementById("order_form");
+
+        orderForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            let orderData = {
+                "text": orderForm.ftext.value,
+                "price": orderForm.price.value,
+                "order_id": "{{ order.id }}",
+            };
+
+            await fetch('/bet_save/',{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json',
+                    'X-CSRFToken':csrftoken,
+                },
+                body: JSON.stringify(orderData),
+            })
+
+            document.location = ""
+        });
+
+        async function chooseComposer(order_id, bet_id) {
+            let betData = {
+                "bet_id": bet_id,
+            };
+
+            await fetch('/choose_composer/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken,
+                },
+                body: JSON.stringify(betData),
+            }).then(response => response.json())
+              .then(data => document.location = "/hold_payment_form/?id=" + data.id)
+        }
+    </script>
+{% endblock content %}

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prepay</title>
+</head>
+    <body id="liqpay_hold"></body>
+    <script src="//static.liqpay.ua/libjs/checkout.js"></script>
+    <script>
+        LiqPayCheckout.init({
+            data: "{{ data }}",
+            signature: "{{ signature }}",
+            embedTo: "#liqpay_hold",
+            language: "en",
+            mode: "embed"
+        });
+    </script>
+</html>

@@ -1,0 +1,42 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% load filters %}
+
+{% block content %}
+    <div class="row">
+        {% for product in products %}
+        <div class="col-lg-4">
+            <div class="box-element product">
+                <div class="hovereffect">
+                    <img class="thumbnail img-responsive" src="{{product.image_url}}">
+                    <div class="overlay audio-player-container">
+                        <button id="play-icon"></button>
+                        <span id="time" class="time">0:00</span>
+                        <input type="range" id="seek-slider" max="100" value="0">
+                        <audio src="{{ product.file }}" preload="metadata" loop></audio>
+                    </div>
+                </div>
+                <h6><strong>{{ product.name }}</strong></h6>
+                <hr>
+                {% if request.user|is_customer %}
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary add-btn">Buy</button>
+                    <div class="dropdown-content">
+                        <button data-product="{{ product.id }}" data-action="add" data-is_premium="false"
+                                class="btn btn-outline-secondary add-btn update-cart">Standard - {{ product.standard_price }}$</button>
+                        <button data-product="{{ product.id }}" data-action="add" data-is_premium="true"
+                                class="btn btn-outline-secondary add-btn update-cart">Premium - {{ product.premium_price }}$</button>
+                    </div>
+                </div>
+                {% endif %}
+                <a class="btn btn-outline-success" href="#">View</a>
+                <h4 style="display:inline-block; float: right">from ${{product.standard_price|floatformat:2}}</h4>
+            </div>
+        </div>
+        {% endfor %}
+
+    <script type="module" src="static/scripts/audio_player.js"></script>
+
+{% endblock content %}
+
+

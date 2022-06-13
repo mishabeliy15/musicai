@@ -1,0 +1,177 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% load filters %}
+
+{% block content %}
+    {% csrf_token %}
+    <br>
+    <div class="row">
+        <div class="col">
+            <div class="box-element">
+                <form method="get">
+                     <div class="form-row">
+                        <div class="form-group col-md-9 my-sm-0">
+                            <input type="text" class="form-control" id="searchMyProduct" placeholder="Search">
+                        </div>
+                        <div class="form-group col-md-3 my-sm-0">
+                            <button class="btn btn-outline-success" type="submit" style="width:100%">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="btn-group btn-group-toggle btn-block" data-toggle="buttons">
+                <label class="btn btn-secondary active">
+                    <input type="radio" name="options" id="public" onchange="processView(this.id)" checked> Public
+                </label>
+                <label class="btn btn-secondary">
+                    <input type="radio" name="options" id="personal" onchange="processView(this.id)"> Personal
+                </label>
+            </div>
+        </div>
+
+        <div class="col-lg-12">
+            <div class="box-element" id="music_public">
+
+                {% if is_composer %}
+                    <div class="cart-row">
+                        <div style="flex:1"></div>
+                        <div style="flex:2"><strong>Item</strong></div>
+                        <div style="flex:1"><strong>Genre</strong></div>
+                        <div style="flex:1"><strong>Instrument</strong></div>
+                        <div style="flex:1"><strong>Emotion</strong></div>
+                        <div style="flex:1"><strong>Standart</strong></div>
+                        <div style="flex:1"><strong>Premium</strong></div>
+                        <div style="flex:1"><strong>File</strong></div>
+                        <div style="flex:1"><strong>Edit</strong></div>
+                    </div>
+
+                    {% for product in products %}
+                        <div class="cart-row">
+                            <div style="flex:1"><img class="row-image" src="{{ product.image_url }}"></div>
+                            <div style="flex:2">{{ product.name }}</div>
+
+                            {% if not is_composer %}
+                                <div style="flex:2"><p>{{ item.project|default:'—' }}</p></div>
+                            {% endif %}
+
+                            <table style="flex:1;">{% for genre in product.genres.all %}
+                                <tr><td><img class="desc-icon" src="{{ genre.image_url }}" title="{{ genre.name }}"></td></tr>
+                            {% endfor %}</table>
+                            <table style="flex:1;">{% for instrument in product.instruments.all %}
+                                <tr><td><img class="desc-icon" src="{{ instrument.image_url }}" title="{{ instrument.name }}"></td></tr>
+                            {% endfor %}</table>
+                            <table style="flex:1;">{% for emotion in product.emotions.all %}
+                                <tr><td><img class="desc-icon" src="{{ emotion.image_url }}" title="{{ emotion.name }}"></td></tr>
+                            {% endfor %}</table>
+
+                            <div style="flex:1">{{ product.standard_price }}</div>
+                            <div style="flex:1">{{ product.premium_price }}</div>
+                            <div style="flex:1"><a href="/{{ product.file }}" download><button class="download-button"><i class="fa fa-download"></i></button></a></div>
+
+                            <div style="flex:1"><a href="/product/?id={{ product.id }}"><i class="far fa-edit" style="font-size: 22px"></i></a></div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="cart-row">
+                        <div style="flex:1"></div>
+                        <div style="flex:2"><strong>Item</strong></div>
+                        <div style="flex:2"><strong>Project</strong></div>
+                        <div style="flex:1"><strong>Genre</strong></div>
+                        <div style="flex:1"><strong>Instrument</strong></div>
+                        <div style="flex:1"><strong>Emotion</strong></div>
+                        <div style="flex:1"><strong>License</strong></div>
+                        <div style="flex:1"><strong>File</strong></div>
+                    </div>
+
+                    {% for item in items %}
+                        <div class="cart-row">
+                            <div style="flex:1"><img class="row-image" src="{{ item.product.image_url }}"></div>
+                            <div style="flex:2">{{ item.product.name }}</div>
+
+                            <div style="flex:2"><p>{{ item.project|default:'—' }}</p></div>
+
+                            <table style="flex:1;">{% for genre in item.product.genres.all %}
+                                <tr><td><img class="desc-icon" src="{{ genre.image_url }}" title="{{ genre.name }}"></td></tr>
+                            {% endfor %}</table>
+                            <table style="flex:1;">{% for instrument in item.product.instruments.all %}
+                                <tr><td><img class="desc-icon" src="{{ instrument.image_url }}" title="{{ instrument.name }}"></td></tr>
+                            {% endfor %}</table>
+                            <table style="flex:1;">{% for emotion in item.product.emotions.all %}
+                                <tr><td><img class="desc-icon" src="{{ emotion.image_url }}" title="{{ emotion.name }}"></td></tr>
+                            {% endfor %}</table>
+
+                            <div style="flex:1"><button class="download-button"><i class="fa fa-download"></i></button></div>
+                            <div style="flex:1"><a href="/{{ item.product.file }}" download><button class="download-button"><i class="fa fa-download"></i></button></a></div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="box-element hidden" id="music_personal">
+                <div class="cart-row">
+                    <div style="flex:2"><strong>Item</strong></div>
+                    {% if not is_composer %}
+                        <div style="flex:2"><strong>Project</strong></div>
+                        <div style="flex:2"><strong>Composer</strong></div>
+                        <div style="flex:1"><strong>License</strong></div>
+                    {% else %}
+                        <div style="flex:1"><strong>Mark</strong></div>
+                        <div style="flex:2"><strong>Feedback</strong></div>
+                    {% endif %}
+                    <div style="flex:1"><strong>File</strong></div>
+                </div>
+
+                {% for order in composer_orders %}
+                    <div class="cart-row">
+                        <div style="flex:2">{{ order.name }}</div>
+                        {% if not is_composer %}
+                            <div style="flex:2"><p>{{ order.project|default:'—' }}</p></div>
+                            <div style="flex:2"><p>{{ order.composer.name }}</p></div>
+                            <div style="flex:1"><button class="download-button"><i class="fa fa-download"></i></button></div>
+                        {% else %}
+                            <div style="flex:1" onbeforeload="getMark({{ order.feedback.mark }})">
+                                <span class="fa fa-star {% if order.feedback.mark >= 1 %}checked{% endif %}" id="m1"></span>
+                                <span class="fa fa-star {% if order.feedback.mark >= 2 %}checked{% endif %}" id="m2"></span>
+                                <span class="fa fa-star {% if order.feedback.mark >= 3 %}checked{% endif %}" id="m3"></span>
+                                <span class="fa fa-star {% if order.feedback.mark >= 4 %}checked{% endif %}" id="m4"></span>
+                                <span class="fa fa-star {% if order.feedback.mark == 5 %}checked{% endif %}" id="m5"></span>
+                            </div>
+                            <div style="flex:2"><p>{{ order.feedback.text }}</p></div>
+                        {% endif %}
+                        <div style="flex:1"><a href="/{{ order.file }}" download><button class="download-button"><i class="fa fa-download"></i></button></a></div>
+                    </div>
+                {% endfor %}
+            </div>
+            <br>
+        </div>
+    </div>
+
+    {% if not request.user|is_customer %}
+        <a href="/product/"><i class="add-button fa fa-plus"></i></a>
+    {% endif %}
+
+    <script>
+        function processView(id) {
+            document.getElementById('music_public').classList.add("hidden");
+            document.getElementById('music_personal').classList.add("hidden");
+            if(id === 'public')
+                document.getElementById('music_public').classList.remove("hidden");
+            else
+                document.getElementById('music_personal').classList.remove("hidden");
+        }
+
+        function getMark(mark) {
+            alert("ok")
+            for(let i = 1; i <= mark; i++){
+                document.getElementById('m'+i).classList.add("checked");
+            }
+        }
+
+    </script>
+{% endblock content %}

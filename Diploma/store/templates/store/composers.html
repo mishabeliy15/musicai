@@ -1,0 +1,55 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% load filters %}
+
+{% block content %}
+    {% csrf_token %}
+    <br>
+    <div class="row">
+        <div class="col">
+            <div class="box-element">
+                <form method="get">
+                     <div class="form-row">
+                        <div class="form-group col-md-9 my-sm-0">
+                            <input type="text" class="form-control" id="searchMyProduct" placeholder="Search">
+                        </div>
+                        <div class="form-group col-md-3 my-sm-0">
+                            <button class="btn btn-outline-success" type="submit" style="width:100%">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <br>
+
+
+
+    {% for composer in composers %}
+        <div class="row">
+            <div class="col-md">
+                <div class="box-element">
+                    <div class="composer-row">
+                        <div style="flex:1"><img class="row-image profilepic__image profilepic" src="{{ composer.image_url }}"></div>
+                        <div style="flex:1">{{ composer.name }}</div>
+                        <div style="flex:2">{{ composer.first_name }} {{ composer.last_name }}</div>
+
+                        <div style="flex:1">
+                            <p style="display: inline">{% if composer.rating > 0 %}{{ composer.rating|floatformat:1 }}{% endif %}</p>
+                            <span class="fa fa-star checked"></span>
+                        </div>
+
+                        <div style="flex:1">{{ composer|finished_orders_count }} orders</div>
+
+                        <div style="flex:1">
+                            <a class="btn btn-outline-info  btn-sm btn-block" href="/composer_order/?id={{ composer.id }}">Order</a>
+                        </div>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock content %}

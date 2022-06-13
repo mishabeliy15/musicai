@@ -1,0 +1,335 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% load filters %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="btn-group btn-group-toggle btn-block" data-toggle="buttons">
+                <label class="btn btn-secondary active">
+                    <input type="radio" name="options" id="new" onchange="processView(this.id)" checked> New: <strong>{{ orders_new.count }}</strong>
+                </label>
+                <label class="btn btn-secondary">
+                    <input type="radio" name="options" id="pending" onchange="processView(this.id)"> Pending: <strong>{{ orders_pending.count }}</strong>
+                </label>
+                <label class="btn btn-secondary">
+                    <input type="radio" name="options" onchange="processView(this.id)" id="in_work"> In work: <strong>{{ orders_in_work.count }}</strong>
+                </label>
+                <label class="btn btn-secondary">
+                    <input type="radio" name="options" onchange="processView(this.id)" id="finished"> Finished: <strong>{{ orders_finished.count }}</strong>
+                </label>
+            </div>
+        </div>
+
+        <div class="col-lg-12">
+
+            <div class="box-element" id="orders_new">
+                <h5>New</h5>
+                <hr>
+                {% if orders_new.count > 0 %}
+                    <div class="cart-row">
+                        <div style="flex:2"><strong>Topic</strong></div>
+                        <div style="flex:3"><strong>Description</strong></div>
+                        <div style="flex:1"><strong>License</strong></div>
+                        <div style="flex:2"><strong>Price</strong></div>
+                        {% if request.user|is_customer %}
+                            <div style="flex:2"><strong>Composer</strong></div>
+                        {% else %}
+                            <div style="flex:1"><strong></strong></div>
+                            <div style="flex:1"><strong></strong></div>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <p>No new orders</p>
+                {% endif %}
+
+                {% for order in orders_new %}
+                    <div class="cart-row">
+                        <div style="flex:2">{{ order.name }}</div>
+
+                        <div style="flex:3">{{ order.description }}</div>
+
+                        {% if order.premium %}
+                            <div style="flex:1; color:green">Premium</div>
+                        {% else %}
+                            <div style="flex:1; color:green">Standard</div>
+                        {% endif %}
+
+                        {% if request.user|is_customer %}
+                            <div style="flex:2">{{ order.price }}</div>
+                            <div style="flex:2">{{ order.composer.first_name }} {{ order.composer.last_name }}</div>
+                        {% else %}
+                            <div style="flex:2"><input id="price_{{ order.id }}" type="number" class="form-control" style="width: 90%" value="{{ order.price|floatformat:2 }}"></div>
+                            <div style="flex:1"><input onclick="confirmOrder({{ order.id }}, true)" type="submit" class="btn btn-outline-info  btn-sm" value=" Confirm "/></div>
+                            <div style="flex:1"><input onclick="confirmOrder({{ order.id }}, false)" type="submit" class="btn btn-outline-info  btn-sm" value="  Refuse  " /></div>
+                        {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+
+
+            <div class="box-element hidden" id="orders_pending">
+                <h5>Pending</h5>
+                <hr>
+                {% if orders_pending.count > 0 %}
+                    <div class="cart-row">
+                        <div style="flex:2"><strong>Topic</strong></div>
+                        <div style="flex:3"><strong>Description</strong></div>
+                        <div style="flex:1"><strong>License</strong></div>
+                        <div style="flex:1"><strong>Price</strong></div>
+                        {% if request.user|is_customer %}
+                            <div style="flex:2"><strong>Composer</strong></div>
+                            <div style="flex:1"><strong></strong></div>
+                            <div style="flex:1"><strong></strong></div>
+                        {% endif %}
+
+                    </div>
+                {% else %}
+                    <p>No orders pending</p>
+                {% endif %}
+
+                {% for order in orders_pending %}
+                    <div class="cart-row">
+                        <div style="flex:2">{{ order.name }}</div>
+
+                        <div style="flex:3">{{ order.description }}</div>
+
+                        {% if order.premium %}
+                            <div style="flex:1; color:green">Premium</div>
+                        {% else %}
+                            <div style="flex:1; color:green">Standard</div>
+                        {% endif %}
+
+                        <div style="flex:1">{{ order.price }}</div>
+
+                        {% if request.user|is_customer %}
+                            <div style="flex:2">{{order.composer.first_name}} {{order.composer.last_name}}</div>
+                            <div style="flex:1"><input onclick="customerConfirmOrder({{ order.id }}, true)" type="submit" class="btn btn-outline-info  btn-sm" value=" Confirm "/></div>
+                            <div style="flex:1"><input onclick="customerConfirmOrder({{ order.id }}, false)" type="submit" class="btn btn-outline-info  btn-sm" value="  Refuse  " /></div>
+                        {% endif %}
+
+                </div>
+                {% endfor %}
+            </div>
+
+
+            <div class="box-element hidden" id="orders_in_work">
+                <h5>In work</h5>
+                <hr>
+                {% if orders_in_work.count > 0 %}
+                    <div class="cart-row">
+                        <div style="flex:2"><strong>Topic</strong></div>
+                        <div style="flex:3"><strong>Description</strong></div>
+                        <div style="flex:1"><strong>License</strong></div>
+                        <div style="flex:1"><strong>Price</strong></div>
+                        {% if request.user|is_customer %}
+                            <div style="flex:2"><strong>Composer</strong></div>
+                        {% else %}
+                            <div style="flex:3"><strong>File</strong></div>
+                            <div style="flex:1"></div>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <p>No orders in work</p>
+                {% endif %}
+
+                {% for order in orders_in_work %}
+                    <div class="cart-row">
+                        <div style="flex:2">{{ order.name }}</div>
+
+                        <div style="flex:3">{{ order.description }}</div>
+
+                        {% if order.premium %}
+                            <div style="flex:1; color:green">Premium</div>
+                        {% else %}
+                            <div style="flex:1; color:green">Standard</div>
+                        {% endif %}
+
+                        <div style="flex:1">{{ order.price|floatformat:2 }}</div>
+
+                        {% if request.user|is_customer %}
+                            <div style="flex:2">{{order.composer.first_name}} {{order.composer.last_name}}</div>
+                        {% else %}
+                            <div style="flex:3"><input type="file" id="file_{{ order.id }}" accept="audio/*" name="pfile"></div>
+                            <div style="flex:1"><input onclick="sendFile({{ order.id }})" type="submit" class="btn btn-outline-info  btn-sm" value="  Send  " /></div>
+                        {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+
+
+            <div class="box-element hidden" id="orders_finished">
+                <h5>Finished</h5>
+                <hr>
+                {% if orders_finished.count > 0 %}
+                    <div class="cart-row">
+                        <div style="flex:2"><strong>Topic</strong></div>
+                        <div style="flex:3"><strong>Description</strong></div>
+                        <div style="flex:1"><strong>License</strong></div>
+                        <div style="flex:1"><strong>Price</strong></div>
+                        <div style="flex:1"><strong>Play</strong></div>
+                        {% if request.user|is_customer %}
+                            <div style="flex:2"><strong>Composer</strong></div>
+                            <div style="flex:1"><strong></strong></div>
+                            <div style="flex:1"><strong></strong></div>
+                        {% else %}
+                            <div style="flex:1"><strong>Accepted</strong></div>
+                            <div style="flex:2"><strong>Feedback</strong></div>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <p>No finished orders</p>
+                {% endif %}
+
+                {% for order in orders_finished %}
+                    <div class="cart-row">
+                        <div style="flex:2">{{ order.name }}</div>
+
+                        <div style="flex:3">{{ order.description }}</div>
+
+                        {% if order.premium %}
+                            <div style="flex:1; color:green">Premium</div>
+                        {% else %}
+                            <div style="flex:1; color:green">Standard</div>
+                        {% endif %}
+
+                        <div style="flex:1">{{ order.price|floatformat:2 }}</div>
+
+                        <div style="flex:1" class="px-2">
+                            <div class="audio-player-container" style="opacity: 1">
+                                <button id="play-icon"></button>
+                                <span id="time" class="time">0:00</span>
+                                <input type="range" id="seek-slider" max="100" value="0">
+                                <audio src="/{{ order.file }}" preload="metadata" loop></audio>
+                            </div>
+                        </div>
+
+                        {% if request.user|is_customer %}
+                            <div style="flex:2">{{order.composer.first_name}} {{order.composer.last_name}}</div>
+                            <div style="flex:1"><input onclick="acceptOrder({{ order.id }}, true)" type="submit" class="btn btn-outline-info  btn-sm" value=" Confirm "/></div>
+                            <div style="flex:1"><input onclick="acceptOrder({{ order.id }}, false)" type="submit" class="btn btn-outline-info  btn-sm" value="  Refuse  " /></div>
+                        {% else %}
+                            <div style="flex:1">{{ order.accept }}</div>
+                            <div style="flex:2">{{ order.price|floatformat:2 }}</div>
+                        {% endif %}
+
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function processView(id) {
+            document.getElementById('orders_new').classList.add("hidden");
+            document.getElementById('orders_pending').classList.add("hidden");
+            document.getElementById('orders_in_work').classList.add("hidden");
+            document.getElementById('orders_finished').classList.add("hidden");
+            if(id === 'new')
+                document.getElementById('orders_new').classList.remove("hidden");
+            else if(id === 'in_work')
+                document.getElementById('orders_in_work').classList.remove("hidden");
+            else if(id === 'pending')
+                document.getElementById('orders_pending').classList.remove("hidden");
+            else
+                document.getElementById('orders_finished').classList.remove("hidden");
+        }
+
+        function confirmOrder(id, confirmed) {
+            let price = document.getElementById("price_" + id).value
+            let orderData = {
+                "price": price,
+                "confirmed": confirmed,
+                "order_id": id,
+            };
+
+            fetch('/order_confirm/',{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json',
+                    'X-CSRFToken':csrftoken,
+                },
+                body: JSON.stringify(orderData),
+            })
+
+            document.location.reload()
+        }
+
+        function customerConfirmOrder(id, confirmed) {
+            let orderData = {
+                "confirmed": confirmed,
+                "order_id": id,
+            };
+
+            fetch('/order_customer_confirm/',{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json',
+                    'X-CSRFToken':csrftoken,
+                },
+                body: JSON.stringify(orderData),
+            }).then(response => {
+                if(confirmed) {
+                    document.location = '/hold_payment_form/?id=' + id;
+                }
+            })
+        }
+
+        const toBase64 = file => new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                if(file === undefined) {
+                    resolve(null);
+                    return;
+                }
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+
+        async function sendFile(id) {
+
+            let file = document.getElementById("file_"+id).files[0]
+            if (file != undefined) {
+                let productData = {
+                    "order_id": id,
+                    "file": await toBase64(file),
+                };
+
+                await fetch('/send_file/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken,
+                    },
+                    body: JSON.stringify(productData),
+                })
+
+                document.location.reload()
+            }
+        }
+
+        function acceptOrder(id, accepted) {
+            document.location = '/get_product_ordered/?id=' + id + '&accept=' + accepted;
+        }
+
+        /*window.onload = function() {
+            let selectedTabButtonId = document.location.href.substring(document.location.href.indexOf("#") + 1);
+            let tabButtonIds = [ "new", "pending", "in_work", "finished" ];
+            let tabButtons = tabButtonIds.map(id => document.getElementById(id));
+
+            for(let tabButton of tabButtons) {
+                if(tabButton.id == selectedTabButtonId) {
+                    tabButton.click();
+                } else {
+                    //tabButton.checked = false;
+                    //tabButton.dispatchEvent(new Event('changed'));
+                }
+            }
+        }*/
+
+    </script>
+
+    <script type="module" src="/static/scripts/audio_player.js"></script>
+{% endblock content %}

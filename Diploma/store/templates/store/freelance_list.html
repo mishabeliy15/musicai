@@ -1,0 +1,61 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% load filters %}
+
+{% block content %}
+    {% csrf_token %}
+    <br>
+    <div class="row">
+        <div class="col">
+            <div class="box-element">
+                <form method="get">
+                     <div class="form-row">
+                        <div class="form-group col-md-9 my-sm-0">
+                            <input type="text" class="form-control" id="searchMyProduct" placeholder="Search">
+                        </div>
+                        <div class="form-group col-md-3 my-sm-0">
+                            <button class="btn btn-outline-success" type="submit" style="width:100%">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <br>
+
+
+    {% for order in freelance_list %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box-element">
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <h5>{{ order.name }}</h5>
+                            <hr />
+                            <div style="flex:2">{{ order.description }}</div>
+                        </div>
+                        <div class="col-sm-2 text-right">
+                            <div class="mb-3" style="color:green">
+                                {% if item.premium %}
+                                    Premium
+                                {% else %}
+                                    Standard
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-3 text-info">${{ order.price }}</div>
+                            <div class="mb-3 text-secondary font-weight-light">{{ order.bet_set.count }} bet{% if order.bet_set.count != 1 %}s{% endif %}</div>
+                            <div>
+                                <a class="btn btn-outline-info btn-sm pr-3 pl-3" href="/freelance_order_info/?id={{ order.id }}">View</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    {% endfor %}
+    </div>
+
+{% endblock content %}

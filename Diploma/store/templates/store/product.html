@@ -1,0 +1,140 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% load filters %}
+
+{% block content %}
+    {% csrf_token %}
+    <br>
+    <form id="product_form">
+        {% if edit_mode %}
+            <input name="id" value="{{ edited_product.id }}" hidden/>
+        {% endif %}
+        <div class="row">
+            <div class="col-md-7 m-auto">
+                <div class="box-element">
+                    <div id="personalInfoForm">
+                        <h5>Product</h5>
+                        <hr>
+                        <div class="form-group">
+                            <label for="pname">Name</label>
+                            <input type="text" class="form-control" name="pname" placeholder="Name" value="{{ edited_product.name|default:'' }}">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                  <label for="standardPrice">Standard license price</label>
+                                  <input type="number" class="form-control" name="standardPrice" placeholder="49" value="{{ edited_product.standard_price|default:'undefined' }}">
+                            </div>
+                            <div class="form-group col-md-6">
+                                  <label for="premiumPrice">Premium license price</label>
+                                  <input type="number" class="form-control" name="premiumPrice" placeholder="149" value="{{ edited_product.premium_price|default:'undefined' }}">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <div class="mb-3">
+                                  <label for="pimage" class="form-label">Image</label>
+                                  <input class="form-control" type="file" accept="image/*" name="pimage" {% if not edit_mode %}required{% endif %}>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <div class="mb-3">
+                                  <label for="pfile" class="form-label">File</label>
+                                  <input class="form-control" type="file" accept="audio/*" name="pfile" {% if not edit_mode %}required{% endif %}>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="genres" class="form-label">Genres</label>
+                                <select class="select col-md-12" id="genres" size="4" multiple aria-label="multiple select example">
+                                    {% for genre in genres %}
+                                        <option value="{{ genre.id }}" {% if edit_mode and edited_product.genres|contains:genre %}selected{% endif %}>{{ genre.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="instruments" class="form-label">Instruments</label>
+                                <select class="select col-md-12" id="instruments" size="4" multiple aria-label="multiple select example">
+                                    {% for instrument in instruments %}
+                                        <option value="{{ instrument.id }}" {% if edit_mode and edited_product.instruments|contains:instrument %}selected{% endif %}>{{ instrument.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="emotions" class="form-label">Emotions</label>
+                                <select class="select col-md-12" id="emotions" size="4" multiple aria-label="multiple select example">
+                                    {% for emotion in emotions %}
+                                        <option value="{{ emotion.id }}" {% if edit_mode and edited_product.emotions|contains:emotion %}selected{% endif %}>{{ emotion.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <input type="submit" id="submit" class="btn btn-outline-info  btn-sm btn-block" href="" value="Save changes" />
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <script>
+        {% if is_composer %}
+            const toBase64 = file => new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                if(file === undefined) {
+                    resolve(null);
+                    return;
+                }
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+
+            let productForm = document.getElementById("product_form");
+
+            productForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                let select_genres = document.getElementById('genres');
+                let genres = [...select_genres.options]
+                    .filter(option => option.selected)
+                    .map(option => parseInt(option.value));
+
+                let select_instruments = document.getElementById('instruments');
+                let instruments = [...select_instruments.options]
+                    .filter(option => option.selected)
+                    .map(option => parseInt(option.value));
+
+                let select_emotions = document.getElementById('emotions');
+                let emotions = [...select_emotions.options]
+                    .filter(option => option.selected)
+                    .map(option => parseInt(option.value));
+
+                let productData = {
+                    "id": productForm.id?.value,
+                    "name": productForm.pname.value,
+                    "standard_price": productForm.standardPrice.value,
+                    "premium_price": productForm.premiumPrice.value,
+                    "image": await toBase64(productForm.pimage.files[0]),
+                    "file": await toBase64(productForm.pfile.files[0]),
+                    "genres": genres,
+                    "instruments": instruments,
+                    "emotions": emotions
+                };
+
+                await fetch('/product_save/',{
+                    method:'POST',
+                    headers:{
+                        'Content-Type':'application/json',
+                        'X-CSRFToken':csrftoken,
+                    },
+                    body: JSON.stringify(productData),
+                })
+
+                document.location = "/my_music/"
+            });
+        {% endif %}
+    </script>
+{% endblock content %}
