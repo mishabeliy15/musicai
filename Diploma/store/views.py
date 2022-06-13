@@ -295,7 +295,7 @@ def holdPaymentForm(request):
         order.price,
         "Personal order payment",
         "personal_" + str(order.id),
-        "TODO/personal_order_hold_payment_callback"
+        "http://185.227.108.95/personal_order_hold_payment_callback/"
     )
     return render(request, 'store/hold_payment_form.html', payment_info)
 
@@ -571,7 +571,7 @@ def processOrder(request):
 def getCheckoutInfo(request):
     customer = request.user.customer
     order = Order.objects.get(customer=customer, complete=False)
-    checkout_info = createPaymentInfo('pay', order.get_cart_total, "Product payment", "product_" + str(order.id), "TODO/checkout_callback")
+    checkout_info = createPaymentInfo('pay', order.get_cart_total, "Product payment", "product_" + str(order.id), "http://185.227.108.95/checkout_callback/")
 
     return JsonResponse(checkout_info)
 
