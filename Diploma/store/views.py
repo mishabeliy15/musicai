@@ -304,7 +304,10 @@ def holdPaymentForm(request):
 def personalOrderHoldPaymentCallback(request):
     data = request.POST.get("data")
     signature = request.POST.get("signature")
-    data_object = verifyPaymentCallback(data, signature)
+    data_object = verifyPaymentCallback(data, signature, "hold_wait")
+
+    if data_object["status"] == "success":
+        return HttpResponse(status=200)
 
     try:
         order_id = int(data_object["order_id"].replace("personal_", ""))
@@ -369,7 +372,7 @@ def acceptOrder(request):
     if data["accepted"]:
         confirmOrRefuseHold("hold_completion", "personal_" + str(order.id))
 
-        order.composer.balance += order.price * COMPOSER_NET_INCOME_PERCENT
+        order.composer.balance += float(order.price) * COMPOSER_NET_INCOME_PERCENT
         order.composer.save()
     else:
         confirmOrRefuseHold("refund", "personal_" + str(order.id))
@@ -580,7 +583,7 @@ def getCheckoutInfo(request):
 def checkoutCallback(request):
     data = request.POST.get("data")
     signature = request.POST.get("signature")
-    data_object = verifyPaymentCallback(data, signature)
+    data_object = verifyPaymentCallback(data, signature, "success")
 
     try:
         order_id = int(data_object["order_id"].replace("product_", ""))
@@ -596,7 +599,7 @@ def checkoutCallback(request):
 
     for order_item in order.orderitem_set.all():
         price = order_item.product.premium_price if order_item.premium else order_item.product.standard_price
-        order_item.product.composer.balance += price * COMPOSER_NET_INCOME_PERCENT
+        order_item.product.composer.balance += float(price) * COMPOSER_NET_INCOME_PERCENT
         order_item.product.composer.save()
 
     order.save()

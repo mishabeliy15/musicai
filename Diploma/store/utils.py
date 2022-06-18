@@ -154,7 +154,7 @@ def confirmOrRefuseHold(action, order_id):
     requests.post('https://www.liqpay.ua/api/request', confirmation)
 
 
-def verifyPaymentCallback(data, signature):
+def verifyPaymentCallback(data, signature, alt_success_status):
     actualSignature = getSignature(data)
 
     if actualSignature != signature:
@@ -163,7 +163,9 @@ def verifyPaymentCallback(data, signature):
     data_json = str(base64.b64decode(bytes(data, 'utf-8')), 'utf-8')
     data_object = json.loads(data_json)
 
-    if data_object["status"] != "success":
+    print(data_object)
+
+    if data_object["status"] != "success" and data_object["status"] != alt_success_status:
         raise ValidationError("Non successful operation")
 
     return data_object
