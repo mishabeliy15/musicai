@@ -15,8 +15,7 @@ from .models import *
 from .templatetags.filters import is_customer
 from .utils import cartData, guestOrder, createPaymentInfo, verifyPaymentCallback, confirmOrRefuseHold
 
-from django.contrib.auth.forms import UserCreationForm
-from .forms import CreateUserForm
+from .forms import CreateCustomerForm, CreateComposerForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -49,10 +48,20 @@ def logoutUser(request):
 
 
 def singupPage(request):
-    form = CreateUserForm()
+    customer_form = CreateCustomerForm()
+    composer_form = CreateComposerForm()
+    active_form = 'customer'
 
     if request.method == 'POST':
-        form = CreateUserForm(request.POST)
+        if request.POST.get('type') == 'customer':
+            form = CreateCustomerForm(request.POST)
+            customer_form = form
+            active_form = 'customer'
+        else:
+            form = CreateComposerForm(request.POST)
+            composer_form = form
+            active_form = 'composer'
+
         if form.is_valid():
             form.save()
             user = form.cleaned_data.get('username')
@@ -60,7 +69,7 @@ def singupPage(request):
 
             return redirect('login')
 
-    context = {'form': form}
+    context = {'active_form': active_form, 'customer_form': customer_form, 'composer_form': composer_form}
     return render(request, 'store/signup.html', context)
 
 

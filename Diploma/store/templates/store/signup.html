@@ -7,40 +7,125 @@
 
 <div class="card-body">
         <div class="btn-group btn-group-toggle btn-block mb-3" data-toggle="buttons">
-            <label class="btn btn-secondary active">
-                <input type="radio" name="options" id="customer" checked>Customer
+            <label class="btn btn-secondary {% if active_form == 'customer' %}active{% endif %}">
+                <input type="radio" name="options" id="customer" onchange="processView(this.id)" {% if active_form == 'customer' %} checked {% endif %}">Customer
             </label>
-            <label class="btn btn-secondary">
-                <input type="radio" name="options" id="composer">Composer
+            <label class="btn btn-secondary {% if active_form == 'composer' %}active{% endif %}">
+                <input type="radio" name="options" id="composer" onchange="processView(this.id)" {% if active_form == 'composer' %} checked {% endif %}">Composer
             </label>
         </div>
 
-    <form method="POST">
+    <form id="customer-form" method="POST" {% if active_form == 'composer' %} hidden {% endif %}>
         {% csrf_token %}
+        <input type="hidden" name="type" value="customer">
+
         <div class="input-group mb-3">
             <div class="input-group-append">
                 <span class="input-group-text"><i class="fas fa-user form"></i></span>
             </div>
-            {{ form.username }}
+            {{ customer_form.username }}
         </div>
+        {% if customer_form.errors.username != None %}
+        <div class="alert alert-danger" role="alert">{{ customer_form.errors.username }}</div>
+        {% endif %}
+
         <div class="input-group mb-2">
             <div class="input-group-append">
                 <span class="input-group-text"><i class="fas fa-envelope-square"></i></span>
             </div>
-            {{ form.email }}
+            {{ customer_form.email }}
         </div>
+        {% if customer_form.errors.email != None %}
+        <div class="alert alert-danger" role="alert">{{ customer_form.errors.email }}</div>
+        {% endif %}
+
         <div class="input-group mb-2">
             <div class="input-group-append">
                 <span class="input-group-text"><i class="fas fa-key"></i></span>
             </div>
-            {{ form.password1 }}
+            {{ customer_form.password1 }}
         </div>
+        {% if customer_form.errors.password1 != None %}
+        <div class="alert alert-danger" role="alert">{{ customer_form.errors.password1 }}</div>
+        {% endif %}
+
         <div class="input-group mb-2">
             <div class="input-group-append">
                 <span class="input-group-text"><i class="fas fa-key"></i></span>
             </div>
-            {{ form.password2 }}
+            {{ customer_form.password2 }}
         </div>
+        {% if customer_form.errors.password2 != None %}
+        <div class="alert alert-danger" role="alert">{{ customer_form.errors.password2 }}</div>
+        {% endif %}
+
+        <input style="margin-top:10px ;" class="button" type="submit" value="Register">
+    </form>
+
+    <form id="composer-form" method="POST" {% if active_form == 'customer' %} hidden {% endif %}>
+        {% csrf_token %}
+        <input type="hidden" name="type" value="composer">
+
+        <div class="input-group mb-3">
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-user form"></i></span>
+            </div>
+            {{ composer_form.username }}
+        </div>
+        {% if composer_form.errors.username != None %}
+        <div class="alert alert-danger" role="alert">{{ composer_form.errors.username }}</div>
+        {% endif %}
+
+        <div class="input-group mb-2">
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-envelope-square"></i></span>
+            </div>
+            {{ composer_form.email }}
+        </div>
+        {% if composer_form.errors.email != None %}
+        <div class="alert alert-danger" role="alert">{{ composer_form.errors.email }}</div>
+        {% endif %}
+
+        <div class="input-group mb-2">
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-user form"></i></span>
+            </div>
+            {{ composer_form.first_name }}
+        </div>
+        {% if composer_form.errors.first_name != None %}
+        <div class="alert alert-danger" role="alert">{{ composer_form.errors.first_name }}</div>
+        {% endif %}
+
+        <div class="input-group mb-2">
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-user form"></i></span>
+            </div>
+            {{ composer_form.last_name }}
+        </div>
+        {% if composer_form.errors.last_name != None %}
+        <div class="alert alert-danger" role="alert">{{ composer_form.errors.last_name }}</div>
+        {% endif %}
+
+        <div class="input-group mb-2">
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-key"></i></span>
+            </div>
+            {{ composer_form.password1 }}
+        </div>
+        {% if composer_form.errors.password1 != None %}
+        <div class="alert alert-danger" role="alert">{{ composer_form.errors.password1 }}</div>
+        {% endif %}
+
+        <div class="input-group mb-2">
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-key"></i></span>
+            </div>
+            {{ composer_form.password2 }}
+        </div>
+        {% if composer_form.errors.password2 != None %}
+        <div class="alert alert-danger" role="alert">{{ composer_form.errors.password2 }}</div>
+        {% endif %}
+
         <input style="margin-top:10px ;" class="button" type="submit" value="Register">
     </form>
     <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
@@ -48,19 +133,43 @@
 
 
 <script>
-        var form_fields = document.getElementsByTagName('input')
-		form_fields[1].placeholder='Username..';
-		form_fields[2].placeholder='Email..';
-		form_fields[3].placeholder='Enter password...';
-		form_fields[4].placeholder='Re-enter Password...';
+    function processView(id) {
+        document.getElementById('customer-form').setAttribute('hidden', '');
+        document.getElementById('composer-form').setAttribute('hidden', '');
 
+        if(id === 'customer')
+            document.getElementById('customer-form').removeAttribute('hidden');
+        else
+            document.getElementById('composer-form').removeAttribute('hidden');
+    }
 
-		for (var field in form_fields){
-			form_fields[field].className += ' form-control'
-		}
+    var customer_form = document.getElementById('customer-form');
+    var customer_form_fields = customer_form.querySelectorAll('input')
 
+    customer_form_fields[2].placeholder='Username..';
+    customer_form_fields[3].placeholder='Email..';
+    customer_form_fields[4].placeholder='Enter password...';
+    customer_form_fields[5].placeholder='Re-enter Password...';
 
-	</script>
+    for (var field in customer_form_fields){
+        customer_form_fields[field].className += ' form-control'
+    }
+
+    var composer_form = document.getElementById('composer-form');
+    var composer_form_fields = composer_form.querySelectorAll('input')
+
+    composer_form_fields[2].placeholder='Username..';
+    composer_form_fields[3].placeholder='Email..';
+    composer_form_fields[4].placeholder='First name..';
+    composer_form_fields[5].placeholder='Last name..';
+    composer_form_fields[6].placeholder='Enter password...';
+    composer_form_fields[7].placeholder='Re-enter Password...';
+
+    for (var field in composer_form_fields){
+        composer_form_fields[field].className += ' form-control'
+    }
+
+</script>
 
 {% endblock content %}
 
