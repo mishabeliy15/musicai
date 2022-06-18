@@ -15,8 +15,53 @@ from .models import *
 from .templatetags.filters import is_customer
 from .utils import cartData, guestOrder, createPaymentInfo, verifyPaymentCallback, confirmOrRefuseHold
 
+from django.contrib.auth.forms import UserCreationForm
+from .forms import CreateUserForm
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+
 
 COMPOSER_NET_INCOME_PERCENT = 0.9
+
+
+def loginPage(request):
+
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('/')
+        else:
+            messages.info(request, 'Username or password is incorrect')
+
+    context = {}
+    return render(request, 'store/login.html', context)
+
+
+def logoutUser(request):
+    logout(request)
+    return redirect('/')
+
+
+def singupPage(request):
+    form = CreateUserForm()
+
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            user = form.cleaned_data.get('username')
+            messages.success(request, 'Account was created for ' + user)
+
+            return redirect('login')
+
+    context = {'form': form}
+    return render(request, 'store/signup.html', context)
 
 
 def store(request):
@@ -215,6 +260,15 @@ def freelanceOrder(request):
     context = { 'cartCount': cartCount }
 
     return render(request, 'store/freelance_order.html', context)
+
+
+def aiOrder(request):
+    data = cartData(request)
+    cartCount = data['cartCount']
+
+    context = { 'cartCount': cartCount }
+
+    return render(request, 'store/ai_order.html', context)
 
 
 def betSave(request):

@@ -5,6 +5,11 @@ urlpatterns = [
     path('', views.store, name="store"),
     path('cart/', views.cart, name="cart"),
     path('checkout/', views.checkout, name="checkout"),
+
+    path('login/', views.loginPage, name="login"),
+    path('signup/', views.singupPage, name="signup"),
+    path('logout/', views.logoutUser, name="logout"),
+
     path('profile/', views.profile, name="profile"),
     path('my_music/', views.my_music, name="my_music"),
     path('product/', views.product, name="product"),
@@ -16,6 +21,7 @@ urlpatterns = [
     path('freelance_list/', views.freelanceList, name="freelance_list"),
     path('my_freelance/', views.myFreelance, name="my_freelance"),
     path('freelance_order_info/', views.freelanceOrderInfo, name="freelance_order_info"),
+    path('ai_order/', views.aiOrder, name="ai_order"),
 
     path('update_item/', views.updateItem, name="update_item"),
     path('process_order/', views.processOrder, name="process_order"),
