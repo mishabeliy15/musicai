@@ -22,7 +22,7 @@
                               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                   <input type="hidden" name="style" id="style" value="Sforzando"/>
                                   {% for style in styles %}
-                                  <button type="button" class="dropdown-item" onclick="styleChosen('{{ style }}')">{{ style }}</button>
+                                  <button type="button" class="dropdown-item" onclick="styleChosen('{{ style }}')">{{ style.name }}</button>
                                   {% endfor %}
                               </div>
                             </div>
@@ -45,6 +45,7 @@
         </div>
     </div>
 
+    <script type="module" src="{% static 'scripts/audio_player.js' %}"></script>
     <script>
 
         /*function genreChosen(genreId, genreName) {

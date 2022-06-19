@@ -337,7 +337,7 @@ def aiGenerate(request):
         fs = FluidSynth(style['path'])
         audio_file = order.file.path.replace('.mid', '') + '_' + style['name'] + '.mpeg'
         fs.midi_to_audio(order.file.path, audio_file)
-        style['file'] = audio_file
+        style['file'] = order.file.name.replace('.mid', '') + '_' + style['name'] + '.mpeg'
 
     context = {'order': order, 'styles': styles}
     return render(request, 'store/ai_generated.html', context)
