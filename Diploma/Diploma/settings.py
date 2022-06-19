@@ -40,8 +40,6 @@ INSTALLED_APPS = [
 
     'store.apps.StoreConfig',
     'store.templatetags.filters',
-
-    'rosetta'
 ]
 
 MIDDLEWARE = [
