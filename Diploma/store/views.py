@@ -285,10 +285,10 @@ def aiOrder(request):
     return render(request, 'store/ai_order.html', context)
 
 
-def aiGenerate(request):
+def aiOrderPrepare(request):
     data = json.loads(request.body)
 
-    order, created = AiOrder.objects.get_or_create(
+    order, created = AiOrder.objects.update_or_create(
         customer=request.user.customer, completed=False,
         defaults={
             'customer': request.user.customer,
@@ -297,6 +297,14 @@ def aiGenerate(request):
             'project': data['project']
         }
     )
+
+    response = {'id': order.id}
+    return JsonResponse(response)
+
+
+def aiGenerate(request):
+    order_id = request.GET['id']
+    order = AiOrder.objects.get(id=order_id)
 
     guid = str(uuid.uuid4().hex)
     dir = os.makedirs('generated/' + guid)

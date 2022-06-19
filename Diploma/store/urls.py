@@ -22,6 +22,7 @@ urlpatterns = [
     path('my_freelance/', views.myFreelance, name="my_freelance"),
     path('freelance_order_info/', views.freelanceOrderInfo, name="freelance_order_info"),
     path('ai_order/', views.aiOrder, name="ai_order"),
+    path('ai_prepare/', views.aiOrderPrepare, name="ai_prepare"),
     path('ai_generate/', views.aiGenerate, name="ai_generate"),
 
     path('update_item/', views.updateItem, name="update_item"),
