@@ -30,7 +30,7 @@
                     </div>
 
                     {% for style in styles %}
-                        <div class="audio-player-container">
+                        <div class="audio-player-container" style="opacity: 1">
                             <button id="play-icon"></button>
                             <span id="time" class="time">0:00</span>
                             <input type="range" id="seek-slider" max="100" value="0">
@@ -40,7 +40,8 @@
 
                 </div>
                 <br>
-                <input type="submit" id="submit" class="btn btn-outline-info  btn-sm btn-block" href="" value="Create music" />
+                <input id="accept" class="btn btn-outline-info  btn-sm btn-block" href="" value="Accept" />
+                <input id="try_again" class="btn btn-outline-info  btn-sm btn-block" href="" value="Try again" />
             </div>
         </div>
     </div>
