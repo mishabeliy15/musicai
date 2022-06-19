@@ -34,7 +34,7 @@
                             <button id="play-icon"></button>
                             <span id="time" class="time">0:00</span>
                             <input type="range" id="seek-slider" max="100" value="0">
-                            <audio src="{% static style.file %}" preload="metadata" loop></audio>
+                            <audio src="{{ style.file }}" preload="metadata" loop></audio>
                         </div>
                     {% endfor %}
 
@@ -47,7 +47,7 @@
 
     <script>
 
-        function genreChosen(genreId, genreName) {
+        /*function genreChosen(genreId, genreName) {
             document.getElementById('genre_id').value = genreId;
             document.getElementById('selected_genre_name').innerHTML = genreName;
         }
@@ -71,6 +71,6 @@
                 },
                 body: JSON.stringify(orderData),
             })
-        });
+        });*/
     </script>
 {% endblock content %}

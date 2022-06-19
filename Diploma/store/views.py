@@ -335,7 +335,7 @@ def aiGenerate(request):
 
     for style in styles:
         fs = FluidSynth(style['path'])
-        audio_file = order.file.path.replace('.mid', '') + '_' + style['name'] + '.mp3'
+        audio_file = order.file.path.replace('.mid', '') + '_' + style['name'] + '.mpeg'
         fs.midi_to_audio(order.file.path, audio_file)
         style['file'] = audio_file
 
