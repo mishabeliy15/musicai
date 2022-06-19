@@ -321,18 +321,23 @@ def aiGenerate(request):
         order.file.name = guid + '.mid'
         order.save()
 
-    styles = [{
-        'name': 'Sforzando',
-        'path': '../magenta/fonts/Dore Mark\'s Yamaha S6-v1.5.sf2'
-    }]
+    instruments = Instrument.objects.filter(font_path__isnull=False)
+    audios = []
 
-    for style in styles:
-        fs = FluidSynth(style['path'])
-        audio_file = order.file.path.replace('.mid', '') + '_' + style['name'] + '.mpeg'
+    for instrument in instruments:
+        fs = FluidSynth(instrument.font_path)
+        audio_file = order.file.path.replace('.mid', '') + '_' + instrument.name + '.mpeg'
         fs.midi_to_audio(order.file.path, audio_file)
-        style['file'] = order.file.name.replace('.mid', '') + '_' + style['name'] + '.mpeg'
+        file_name = order.file.name.replace('.mid', '') + '_' + instrument.name + '.mpeg'
 
-    context = {'order': order, 'styles': styles}
+        audio = {
+            'instrument': instrument,
+            'file': file_name
+        }
+
+        audios.append(audio)
+
+    context = {'order': order, 'audios': audios}
     return render(request, 'store/ai_generated.html', context)
 
 

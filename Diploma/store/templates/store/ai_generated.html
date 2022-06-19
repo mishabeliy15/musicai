@@ -14,27 +14,27 @@
 
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="license" class="form-label" style="display: block">Choose style</label>
+                            <label for="license" class="form-label" style="display: block">Choose instrument</label>
                             <div class="dropdown">
                               <button class="btn btn-secondary dropdown-toggle" style="width: 300px" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                   <span id="selected_style">Sforzando</span>
                               </button>
                               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                   <input type="hidden" name="style" id="style" value="Sforzando"/>
-                                  {% for style in styles %}
-                                  <button type="button" class="dropdown-item" onclick="styleChosen('{{ style }}')">{{ style.name }}</button>
+                                  {% for audio in audios %}
+                                  <button type="button" class="dropdown-item" onclick="styleChosen('{{ audio.instrument.id }}')">{{ audio.instrument.name }}</button>
                                   {% endfor %}
                               </div>
                             </div>
                         </div>
                     </div>
 
-                    {% for style in styles %}
+                    {% for audio in audios %}
                         <div class="audio-player-container" style="opacity: 1">
                             <button id="play-icon"></button>
                             <span id="time" class="time">0:00</span>
                             <input type="range" id="seek-slider" max="100" value="0">
-                            <audio src="{% static style.file %}" preload="metadata" loop></audio>
+                            <audio src="{% static audio.file %}" preload="metadata" loop></audio>
                         </div>
                     {% endfor %}
 

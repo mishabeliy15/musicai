@@ -69,6 +69,7 @@ class Genre(models.Model):
 class Instrument(models.Model):
     name = models.CharField(max_length=200, null=True)
     image = models.ImageField(upload_to='images/instruments/', null=True, blank=True)
+    font_path = models.CharField(max_length=200, null=True)
 
     def __str__(self):
         return self.name
