@@ -15,7 +15,7 @@
 
                         <div class="form-group">
                             <label for="topic">Project</label>
-                            <input type="text" class="form-control" name="topic" placeholder="Project name" value="{{ edited_product.name|default:'' }}">
+                            <input type="text" class="form-control" name="project" placeholder="Project name" required>
                         </div>
 
                         <div class="form-row">
@@ -23,12 +23,13 @@
                                 <label for="license" class="form-label" style="display: block">Choose genre</label>
                                 <div class="dropdown">
                                   <button class="btn btn-secondary dropdown-toggle" style="width: 300px" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    No matter
+                                      <span id="selected_genre_name">No matter</span>
                                   </button>
                                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
+                                      <input type="hidden" name="genre_id" id="genre_id" value="0"/>
+                                      {% for genre in genres %}
+                                      <button type="button" class="dropdown-item" onclick="genreChosen({{ genre.id }}, '{{ genre.name }}')">{{ genre.name }}</button>
+                                      {% endfor %}
                                   </div>
                                 </div>
                             </div>
@@ -38,10 +39,10 @@
                                     <label for="license" class="form-label" style="display: block">Choose license type</label>
                                     <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                         <label class="btn btn-secondary active" style="width: 150px" name="license">
-                                            <input type="radio" name="options" id="standard" checked> Standard
+                                            <input type="radio" name="standard" id="standard" checked> Standard
                                         </label>
                                         <label class="btn btn-secondary" style="width: 150px" >
-                                          <input type="radio" name="options"  id="premium"> Premium
+                                          <input type="radio" name="premium"  id="premium"> Premium
                                         </label>
                                     </div>
                                 </div>
@@ -59,19 +60,23 @@
 
     <script>
 
+        function genreChosen(genreId, genreName) {
+            document.getElementById('genre_id').value = genreId;
+            document.getElementById('selected_genre_name').innerHTML = genreName;
+        }
+
         let orderForm = document.getElementById("order_form");
 
         orderForm.addEventListener('submit', async function(e) {
             e.preventDefault();
 
             let orderData = {
-                "name": orderForm.topic.value,
-                "description": orderForm.description.value,
-                "premium": orderForm.premium.checked,
-                "price": orderForm.price.value,
+                "project" : orderForm.project.value,
+                "genre_id": orderForm.genre_id.value,
+                "is_premium": orderForm.premium.value == 'on'
             };
 
-            await fetch('/freelance_order_save/',{
+            await fetch('/ai_generate/',{
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json',

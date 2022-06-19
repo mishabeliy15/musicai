@@ -1,4 +1,5 @@
 import base64
+import os
 
 from django.shortcuts import render
 from django.http import JsonResponse
@@ -275,9 +276,39 @@ def aiOrder(request):
     data = cartData(request)
     cartCount = data['cartCount']
 
-    context = { 'cartCount': cartCount }
+    context = { 'cartCount': cartCount, 'genres': Genre.objects.all() }
 
     return render(request, 'store/ai_order.html', context)
+
+
+def aiGenerate(request):
+    data = json.loads(request.body)
+
+    order, created = AiOrder.objects.get_or_create(
+        customer=request.user.customer, completed=False,
+        defaults={
+            'customer': request.user.customer,
+            'genre_id': data['genre_id'],
+            'is_premium': data['is_premium'],
+            'project': data['project']
+        }
+    )
+
+    guid = str(uuid.uuid4().hex)
+    dir = os.makedirs('../../../../generated/' + guid)
+
+    os.system('../../../../magenta/magenta/models/melody_rnn/melody_rnn_generate.py \
+                --config=attention_rnn \
+                --bundle_file=magenta/models/attention_rnn.mag \
+                --output_dir=../../../../generated/' + guid + ' \
+                --num_outputs=1 \
+                --num_steps=128 \
+                --primer_melody="[60]"'
+    )
+
+    files = os.listdir('../../../../generated/' + guid)
+    order.file = os.readlink(files[0])
+    order.save()
 
 
 def betSave(request):

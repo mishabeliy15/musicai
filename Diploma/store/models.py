@@ -224,3 +224,12 @@ class Feedback(models.Model):
     def __str__(self):
         return str(self.mark)
 
+
+class AiOrder(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, blank=True, null=True)
+    genre = models.ForeignKey(Genre, on_delete=models.SET_NULL, blank=True, null=True)
+    is_premium = models.BooleanField(max_length=200, null=True)
+    completed = models.BooleanField(max_length=200, default=False)
+    file = models.FileField(upload_to='files/', max_length=200, null=True)
+    project = models.CharField(max_length=200, null=True)
+
