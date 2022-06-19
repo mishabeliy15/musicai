@@ -1,13 +1,15 @@
 import base64
 import os
 
+import subprocess
+
 from django.shortcuts import render
 from django.http import JsonResponse
 import json
 import uuid
 
 from django.shortcuts import redirect
-from django.core.files.base import ContentFile
+from django.core.files.base import ContentFile, File
 from django.core.exceptions import ValidationError
 from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404, HttpResponse
@@ -295,20 +297,28 @@ def aiGenerate(request):
     )
 
     guid = str(uuid.uuid4().hex)
-    dir = os.makedirs('../../../../generated/' + guid)
+    dir = os.makedirs('generated/' + guid)
 
-    os.system('../../../../magenta/magenta/models/melody_rnn/melody_rnn_generate.py \
+    command = 'python3 magenta/magenta/models/melody_rnn/melody_rnn_generate.py \
                 --config=attention_rnn \
                 --bundle_file=magenta/models/attention_rnn.mag \
-                --output_dir=../../../../generated/' + guid + ' \
+                --output_dir=generated/' + guid + ' \
                 --num_outputs=1 \
                 --num_steps=128 \
                 --primer_melody="[60]"'
-    )
 
-    files = os.listdir('../../../../generated/' + guid)
-    order.file = os.readlink(files[0])
+    proc = subprocess.Popen((command), shell=True)
+    proc.wait()
+
+    dir = 'generated/' + guid
+    files = os.listdir(dir)
+    
+    with open(dir + '/' + files[0], 'rb') as f:
+        order.file.save(guid + '.mid', File(f))
+
     order.save()
+
+    return render(request, 'store/ai_generater.html', order)
 
 
 def betSave(request):
