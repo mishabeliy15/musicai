@@ -40,8 +40,9 @@
 
                 </div>
                 <br>
-                <button onchange="acceptOrder()" id="accept" class="btn btn-outline-info btn-sm btn-block">Accept</button>
-                <button onchange="resetOrder()" id="try_again" class="btn btn-outline-info btn-sm btn-block">Try again</button>
+                <button onclick="acceptOrder()" id="accept" class="btn btn-outline-info btn-sm btn-block">Accept</button>
+                <button onclick="resetOrder()" id="try_again" class="btn btn-outline-info btn-sm btn-block">Try again</button>
+                <div id="liqpay_checkout"></div>
             </div>
         </div>
     </div>
@@ -79,6 +80,9 @@
             })
             .then(response => response.json())
             .then(data => {
+                document.getElementById('accept').setAttribute('hidden', '');
+                document.getElementById('try_again').setAttribute('hidden', '');
+
                 LiqPayCheckout.init({
                     data: data.data,
                     signature: data.signature,
