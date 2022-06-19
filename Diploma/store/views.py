@@ -307,16 +307,9 @@ def aiGenerate(request):
     order = AiOrder.objects.get(id=order_id)
 
     guid = str(uuid.uuid4().hex)
-    dir = os.makedirs('generated/' + guid)
+    os.makedirs('generated/' + guid)
 
-    command = 'python3 magenta/magenta/models/melody_rnn/melody_rnn_generate.py \
-                --config=attention_rnn \
-                --bundle_file=magenta/models/attention_rnn.mag \
-                --output_dir=generated/' + guid + ' \
-                --num_outputs=1 \
-                --num_steps=128 \
-                --primer_melody="[60]"'
-
+    command = getPolyphonyCommand(guid=guid)
     proc = subprocess.Popen((command), shell=True)
     proc.wait()
 
@@ -341,6 +334,27 @@ def aiGenerate(request):
 
     context = {'order': order, 'styles': styles}
     return render(request, 'store/ai_generated.html', context)
+
+
+def getPolyphonyCommand(guid):
+    return 'python3 magenta/magenta/models/polyphony_rnn/polyphony_rnn_generate.py \
+                --bundle_file=magenta/models/polyphony_rnn.mag \
+                --output_dir=generated/' + guid + ' \
+                --num_outputs=1 \
+                --num_steps=128 \
+                --primer_pitches="[67,64,60]" \
+                --condition_on_primer=true \
+                --inject_primer_during_generation=false'
+
+
+def getMelodyCommand(guid):
+    return 'python3 magenta/magenta/models/melody_rnn/melody_rnn_generate.py \
+            --config=attention_rnn \
+            --bundle_file=magenta/models/attention_rnn.mag \
+            --output_dir=generated/' + guid + ' \
+            --num_outputs=1 \
+            --num_steps=128 \
+            --primer_melody="[60]"'
 
 
 def betSave(request):
