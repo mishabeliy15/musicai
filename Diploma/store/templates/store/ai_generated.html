@@ -50,7 +50,7 @@
     <script>
         function instrumentChosen(instrumentId, instrumentName) {
             document.getElementById('instrument_id').value = instrumentId;
-            document.getElementById('selected_instrument').value = instrumentName;
+            document.getElementById('selected_instrument').innerHTML = instrumentName;
             managePlayersVisibility(instrumentId)
         }
 
