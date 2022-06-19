@@ -1,6 +1,8 @@
 import base64
 import os
 
+from midi2audio import FluidSynth
+
 import subprocess
 
 from django.shortcuts import render
@@ -314,11 +316,23 @@ def aiGenerate(request):
     files = os.listdir(dir)
     
     with open(dir + '/' + files[0], 'rb') as f:
-        order.file.save(guid + '.mid', File(f))
+        order.file = File(f)
+        order.file.name = guid + '.mid'
+        order.save()
 
-    order.save()
+    styles = [{
+        'name': 'Sforzando',
+        'path': '../magenta/fonts/Dore Mark\'s Yamaha S6-v1.5.sf2'
+    }]
 
-    return render(request, 'store/ai_generater.html', order)
+    for style in styles:
+        fs = FluidSynth(style['path'])
+        audio_file = order.file.path.replace('.mid', '') + '_' + style['name'] + '.mp3'
+        fs.midi_to_audio(order.file.path, audio_file)
+        style['file'] = audio_file
+
+    context = {'order': order, 'styles': styles}
+    return render(request, 'store/ai_generated.html', context)
 
 
 def betSave(request):

@@ -1,0 +1,78 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% load filters %}
+
+{% block content %}
+    {% csrf_token %}
+    <br>
+    <div class="row">
+        <div class="col-md-7 m-auto">
+            <div class="box-element">
+                <div id="personalInfoForm">
+                    <h5>AI have generated some music for you</h5>
+                    <hr>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="license" class="form-label" style="display: block">Choose style</label>
+                            <div class="dropdown">
+                              <button class="btn btn-secondary dropdown-toggle" style="width: 300px" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <span id="selected_style">Sforzando</span>
+                              </button>
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                  <input type="hidden" name="style" id="style" value="Sforzando"/>
+                                  {% for style in styles %}
+                                  <button type="button" class="dropdown-item" onclick="styleChosen('{{ style }}')">{{ style }}</button>
+                                  {% endfor %}
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% for style in styles %}
+                        <div class="audio-player-container">
+                            <button id="play-icon"></button>
+                            <span id="time" class="time">0:00</span>
+                            <input type="range" id="seek-slider" max="100" value="0">
+                            <audio src="{% static style.file %}" preload="metadata" loop></audio>
+                        </div>
+                    {% endfor %}
+
+                </div>
+                <br>
+                <input type="submit" id="submit" class="btn btn-outline-info  btn-sm btn-block" href="" value="Create music" />
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        function genreChosen(genreId, genreName) {
+            document.getElementById('genre_id').value = genreId;
+            document.getElementById('selected_genre_name').innerHTML = genreName;
+        }
+
+        let orderForm = document.getElementById("order_form");
+
+        orderForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            let orderData = {
+                "project" : orderForm.project.value,
+                "genre_id": orderForm.genre_id.value,
+                "is_premium": orderForm.premium.value == 'on'
+            };
+
+            await fetch('/ai_generate/',{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json',
+                    'X-CSRFToken':csrftoken,
+                },
+                body: JSON.stringify(orderData),
+            })
+
+            document.location = "{% url 'my_freelance' %}"
+        });
+    </script>
+{% endblock content %}
