@@ -68,13 +68,14 @@
         managePlayersVisibility({{ first_instrument.id }})
 
         function acceptOrder() {
+            instrumentId = document.getElementById('instrument_id').value;
             fetch('/accept_ai_order/', {
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json',
                     'X-CSRFToken':csrftoken,
                 },
-                body:JSON.stringify({'id': {{ order.id }} })
+                body:JSON.stringify({'id': {{ order.id }}, 'instrument_id': instrumentId })
             })
             .then(response => response.json())
             .then(data => {

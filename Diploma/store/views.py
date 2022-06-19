@@ -305,17 +305,27 @@ def aiOrderPrepare(request):
 def resetAiOrder(request):
     data = json.loads(request.body)
     order = AiOrder.objects.get(id=data['id'])
+
     order.accepted = False
+    order.save()
+
     return HttpResponse(status=200)
 
 
 def acceptAiOrder(request):
     data = json.loads(request.body)
     order = AiOrder.objects.get(id=data['id'])
+    instrument = Instrument.objects.get(id=data['instrument_id'])
+
     order.accepted = True
+    order.audio_file = File(order.file.path.replace('.mid', '') + '_' + instrument.name + '.mpeg')
+
+    order.save()
+
+    price = 15 if order.is_premium else 5
 
     payment_info = createPaymentInfo(
-        'pay', 5, 'AI composition',
+        'pay', price, 'AI composition',
         'ai_' + str(order.id),
         "http://185.227.108.95/ai_order_payment_callback/"
     )
