@@ -1,0 +1,161 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-06-19 03:37+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != "
+"11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % "
+"100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || "
+"(n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+
+#: .\Diploma\settings.py:146
+msgid "English"
+msgstr "English"
+
+#: .\Diploma\settings.py:147
+msgid "Ukrainian"
+msgstr "Українська"
+
+#: .\store\templates\store\login.html:6 .\store\templates\store\login.html:25
+#: .\store\templates\store\main.html:164
+#: .\store\templates\store\signup.html:132
+msgid "Login"
+msgstr "Вхід"
+
+#: .\store\templates\store\login.html:17
+#: .\store\templates\store\signup.html:150
+#: .\store\templates\store\signup.html:162
+msgid "Username.."
+msgstr "Ім'я користувача.."
+
+#: .\store\templates\store\login.html:23
+#: .\store\templates\store\signup.html:152
+#: .\store\templates\store\signup.html:166
+msgid "Enter password..."
+msgstr "Пароль..."
+
+#: .\store\templates\store\login.html:32
+msgid "Dont have an account"
+msgstr "Ще не маєте облікового запису"
+
+#: .\store\templates\store\login.html:32 .\store\templates\store\signup.html:6
+#: .\store\templates\store\signup.html:63
+#: .\store\templates\store\signup.html:130
+msgid "Register"
+msgstr "Реєстрація"
+
+#: .\store\templates\store\main.html:76
+msgid "Store"
+msgstr "Магазин"
+
+#: .\store\templates\store\main.html:82
+msgid "My music"
+msgstr "Моя музика"
+
+#: .\store\templates\store\main.html:87 .\store\templates\store\main.html:96
+msgid "Orders"
+msgstr "Замовлення"
+
+#: .\store\templates\store\main.html:90 .\store\templates\store\main.html:106
+#: .\store\templates\store\main.html:114
+msgid "Freelance"
+msgstr "Фріланс"
+
+#: .\store\templates\store\main.html:91
+msgid "Personal"
+msgstr "Персональні"
+
+#: .\store\templates\store\main.html:103
+msgid "Order music"
+msgstr "Замовити музику"
+
+#: .\store\templates\store\main.html:107
+msgid "Composer list"
+msgstr "Список композиторів"
+
+#: .\store\templates\store\main.html:108
+msgid "AI"
+msgstr "ШІ"
+
+#: .\store\templates\store\main.html:117
+msgid "List"
+msgstr "Список"
+
+#: .\store\templates\store\main.html:118
+msgid "My bets"
+msgstr "Мої ставки"
+
+#: .\store\templates\store\main.html:146 .\store\templates\store\main.html:147
+msgid "Search"
+msgstr "Пошук"
+
+#: .\store\templates\store\main.html:156
+msgid "Profile"
+msgstr "Профіль"
+
+#: .\store\templates\store\main.html:157
+msgid "Logout"
+msgstr "Вихід"
+
+#: .\store\templates\store\signup.html:12
+msgid "Customer"
+msgstr "Споживач"
+
+#: .\store\templates\store\signup.html:15
+msgid "Composer"
+msgstr "Композитор"
+
+#: .\store\templates\store\signup.html:132
+msgid "Already have an account"
+msgstr "Вже маєте обліковий запис"
+
+#: .\store\templates\store\signup.html:151
+#: .\store\templates\store\signup.html:163
+msgid "Email.."
+msgstr "Електронна пошта.."
+
+#: .\store\templates\store\signup.html:153
+#: .\store\templates\store\signup.html:167
+msgid "Re-enter Password..."
+msgstr "Повторіть пароль..."
+
+#: .\store\templates\store\signup.html:164
+msgid "First name.."
+msgstr "Ім'я.."
+
+#: .\store\templates\store\signup.html:165
+msgid "Last name.."
+msgstr "Прізвище.."
+
+#: .\store\templates\store\store.html:24
+msgid "Buy"
+msgstr "Придбати"
+
+#: .\store\templates\store\store.html:27
+msgid "Standard"
+msgstr "Стандарт"
+
+#: .\store\templates\store\store.html:29
+msgid "Premium"
+msgstr "Преміум"
+
+#: .\store\templates\store\store.html:33
+msgid "View product"
+msgstr "Перегляд"
+
+#: .\store\templates\store\store.html:34
+msgid "price_from"
+msgstr "від"

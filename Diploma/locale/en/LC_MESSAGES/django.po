@@ -1,0 +1,158 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-06-19 03:37+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\Diploma\settings.py:146
+msgid "English"
+msgstr "English"
+
+#: .\Diploma\settings.py:147
+msgid "Ukrainian"
+msgstr "Українська"
+
+#: .\store\templates\store\login.html:6 .\store\templates\store\login.html:25
+#: .\store\templates\store\main.html:164
+#: .\store\templates\store\signup.html:132
+msgid "Login"
+msgstr "Login"
+
+#: .\store\templates\store\login.html:17
+#: .\store\templates\store\signup.html:150
+#: .\store\templates\store\signup.html:162
+msgid "Username.."
+msgstr "Username.."
+
+#: .\store\templates\store\login.html:23
+#: .\store\templates\store\signup.html:152
+#: .\store\templates\store\signup.html:166
+msgid "Enter password..."
+msgstr "Enter password..."
+
+#: .\store\templates\store\login.html:32
+msgid "Dont have an account"
+msgstr "Don't have an account"
+
+#: .\store\templates\store\login.html:32 .\store\templates\store\signup.html:6
+#: .\store\templates\store\signup.html:63
+#: .\store\templates\store\signup.html:130
+msgid "Register"
+msgstr "Register"
+
+#: .\store\templates\store\main.html:76
+msgid "Store"
+msgstr "Store"
+
+#: .\store\templates\store\main.html:82
+msgid "My music"
+msgstr "My music"
+
+#: .\store\templates\store\main.html:87 .\store\templates\store\main.html:96
+msgid "Orders"
+msgstr "Orders"
+
+#: .\store\templates\store\main.html:90 .\store\templates\store\main.html:106
+#: .\store\templates\store\main.html:114
+msgid "Freelance"
+msgstr "Freelance"
+
+#: .\store\templates\store\main.html:91
+msgid "Personal"
+msgstr "Personal"
+
+#: .\store\templates\store\main.html:103
+msgid "Order music"
+msgstr "Order music"
+
+#: .\store\templates\store\main.html:107
+msgid "Composer list"
+msgstr "Composer list"
+
+#: .\store\templates\store\main.html:108
+msgid "AI"
+msgstr "AI"
+
+#: .\store\templates\store\main.html:117
+msgid "List"
+msgstr "List"
+
+#: .\store\templates\store\main.html:118
+msgid "My bets"
+msgstr "My bets"
+
+#: .\store\templates\store\main.html:146 .\store\templates\store\main.html:147
+msgid "Search"
+msgstr "Search"
+
+#: .\store\templates\store\main.html:156
+msgid "Profile"
+msgstr "Profile"
+
+#: .\store\templates\store\main.html:157
+msgid "Logout"
+msgstr "Logout"
+
+#: .\store\templates\store\signup.html:12
+msgid "Customer"
+msgstr "Customer"
+
+#: .\store\templates\store\signup.html:15
+msgid "Composer"
+msgstr "Composer"
+
+#: .\store\templates\store\signup.html:132
+msgid "Already have an account"
+msgstr "Already have an account"
+
+#: .\store\templates\store\signup.html:151
+#: .\store\templates\store\signup.html:163
+msgid "Email.."
+msgstr "Email.."
+
+#: .\store\templates\store\signup.html:153
+#: .\store\templates\store\signup.html:167
+msgid "Re-enter Password..."
+msgstr "Re-enter Password..."
+
+#: .\store\templates\store\signup.html:164
+msgid "First name.."
+msgstr "First name.."
+
+#: .\store\templates\store\signup.html:165
+msgid "Last name.."
+msgstr "Last name.."
+
+#: .\store\templates\store\store.html:24
+msgid "Buy"
+msgstr "Buy"
+
+#: .\store\templates\store\store.html:27
+msgid "Standard"
+msgstr "Standard"
+
+#: .\store\templates\store\store.html:29
+msgid "Premium"
+msgstr "Premium"
+
+#: .\store\templates\store\store.html:33
+msgid "View product"
+msgstr "View"
+
+#: .\store\templates\store\store.html:34
+msgid "price_from"
+msgstr "from"
