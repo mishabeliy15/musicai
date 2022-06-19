@@ -40,8 +40,8 @@
 
                 </div>
                 <br>
-                <input id="accept" class="btn btn-outline-info  btn-sm btn-block" href="" value="Accept" />
-                <input id="try_again" class="btn btn-outline-info  btn-sm btn-block" href="" value="Try again" />
+                <input onchange="acceptOrder()" id="accept" class="btn btn-outline-info  btn-sm btn-block" value="Accept" />
+                <input onchange="resetOrder()" id="try_again" class="btn btn-outline-info  btn-sm btn-block" href="" value="Try again" />
             </div>
         </div>
     </div>
@@ -64,30 +64,52 @@
                 }
             }
         }
-        /*function genreChosen(genreId, genreName) {
-            document.getElementById('genre_id').value = genreId;
-            document.getElementById('selected_genre_name').innerHTML = genreName;
-        }
 
-        let orderForm = document.getElementById("order_form");
+        managePlayersVisibility({{ first_instrument.id }})
 
-        orderForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            let orderData = {
-                "project" : orderForm.project.value,
-                "genre_id": orderForm.genre_id.value,
-                "is_premium": orderForm.premium.value == 'on'
-            };
-
-            await fetch('/ai_generate/',{
+        function acceptOrder() {
+            fetch('/accept_ai_order/', {
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json',
                     'X-CSRFToken':csrftoken,
                 },
-                body: JSON.stringify(orderData),
+                body:JSON.stringify({'id': {{ order.id }} })
             })
-        });*/
+            .then(response => response.json())
+            .then(data => {
+                LiqPayCheckout.init({
+                    data: data.data,
+                    signature: data.signature,
+                    embedTo: "#liqpay_checkout",
+                    language: "en",
+                    mode: "embed" // embed || popup,
+                }).on("liqpay.callback", function(data){
+                    console.log(data);
+                    console.log('Status:', data.status);
+
+                    if(data.status == "success") {
+                        window.location.href = "{% url 'my_music' %}"
+                    }
+                }).on("liqpay.ready", function(data){
+                    //embedded
+                }).on("liqpay.close", function(data){
+                    // close
+                });
+            })
+        }
+
+        function resetOrder() {
+            fetch('/reset_ai_order/', {
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json',
+                    'X-CSRFToken':csrftoken,
+                },
+                body:JSON.stringify({'id': {{ order.id }} })
+            })
+            .then(response => document.location.reload())
+        }
     </script>
+    <script src="//static.liqpay.ua/libjs/checkout.js" async></script>
 {% endblock content %}

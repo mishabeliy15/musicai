@@ -230,6 +230,7 @@ class AiOrder(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, blank=True, null=True)
     genre = models.ForeignKey(Genre, on_delete=models.SET_NULL, blank=True, null=True)
     is_premium = models.BooleanField(max_length=200, null=True)
+    accepted = models.BooleanField(max_length=200, default=False)
     completed = models.BooleanField(max_length=200, default=False)
     file = models.FileField(upload_to='files/', max_length=200, null=True)
     audio_file = models.FileField(upload_to='files/', max_length=200, null=True)

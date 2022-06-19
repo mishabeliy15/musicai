@@ -24,6 +24,9 @@ urlpatterns = [
     path('ai_order/', views.aiOrder, name="ai_order"),
     path('ai_prepare/', views.aiOrderPrepare, name="ai_prepare"),
     path('ai_generate/', views.aiGenerate, name="ai_generate"),
+    path('reset_ai_order/', views.resetAiOrder, name="reset_ai_order"),
+    path('accept_ai_order/', views.acceptAiOrder, name="accept_ai_order"),
+    path('ai_order_payment_callback/', views.aiOrderPaymentCallback, name="ai_order_payment_callback"),
 
     path('update_item/', views.updateItem, name="update_item"),
     path('process_order/', views.processOrder, name="process_order"),

@@ -302,24 +302,67 @@ def aiOrderPrepare(request):
     return JsonResponse(response)
 
 
+def resetAiOrder(request):
+    data = json.loads(request.body)
+    order = AiOrder.objects.get(id=data['id'])
+    order.accepted = False
+    return HttpResponse(status=200)
+
+
+def acceptAiOrder(request):
+    data = json.loads(request.body)
+    order = AiOrder.objects.get(id=data['id'])
+    order.accepted = True
+
+    payment_info = createPaymentInfo(
+        'pay', 5, 'AI composition',
+        'ai_' + str(order.id),
+        "http://185.227.108.95/ai_order_payment_callback/"
+    )
+
+    return JsonResponse(payment_info)
+
+
+@csrf_exempt
+def aiOrderPaymentCallback(request):
+    data = request.POST.get("data")
+    signature = request.POST.get("signature")
+    data_object = verifyPaymentCallback(data, signature, "success")
+
+    try:
+        order_id = int(data_object["order_id"].replace("ai_", ""))
+        order = AiOrder.objects.get(id=order_id)
+    except:
+        raise Http404()
+
+    if order.complete:
+        raise ValidationError("Order is already completed")
+
+    order.complete = True
+    order.save()
+
+    return HttpResponse(status=200)
+
+
 def aiGenerate(request):
     order_id = request.GET['id']
     order = AiOrder.objects.get(id=order_id)
 
-    guid = str(uuid.uuid4().hex)
-    os.makedirs('generated/' + guid)
+    if not order.accepted:
+        guid = str(uuid.uuid4().hex)
+        os.makedirs('generated/' + guid)
 
-    command = getPolyphonyCommand(guid=guid)
-    proc = subprocess.Popen((command), shell=True)
-    proc.wait()
+        command = getPolyphonyCommand(guid=guid)
+        proc = subprocess.Popen((command), shell=True)
+        proc.wait()
 
-    dir = 'generated/' + guid
-    files = os.listdir(dir)
-    
-    with open(dir + '/' + files[0], 'rb') as f:
-        order.file = File(f)
-        order.file.name = guid + '.mid'
-        order.save()
+        dir = 'generated/' + guid
+        files = os.listdir(dir)
+
+        with open(dir + '/' + files[0], 'rb') as f:
+            order.file = File(f)
+            order.file.name = guid + '.mid'
+            order.save()
 
     instruments = Instrument.objects.filter(font_path__isnull=False)
     audios = []
