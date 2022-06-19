@@ -22,7 +22,7 @@
                               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                   <input type="hidden" name="instrument_id" id="style" value="{{ first_instrument.id }}"/>
                                   {% for audio in audios %}
-                                  <button type="button" class="dropdown-item" onclick="instrumentChosen('{{ audio.instrument.id }}')">{{ audio.instrument.name }}</button>
+                                  <button type="button" class="dropdown-item" onclick="instrumentChosen({{ audio.instrument.id }}, '{{  audio.instrument.name }}')">{{ audio.instrument.name }}</button>
                                   {% endfor %}
                               </div>
                             </div>
