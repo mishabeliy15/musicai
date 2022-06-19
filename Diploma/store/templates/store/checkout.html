@@ -101,16 +101,6 @@
             document.getElementById('payment-info').classList.remove('hidden')
             document.getElementById("form-wrapper").classList.add('hidden')
             submitFormData();
-
-            fetch('/process_order/',{
-                method:'POST',
-                headers:{
-                    'Content-Type':'application/json',
-                    'X-CSRFToken':csrftoken,
-                },
-            })
-            .then(response => response.json())
-            .then(data => submitFormData());
         })
 
         function submitFormData(){

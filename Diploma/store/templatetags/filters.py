@@ -1,4 +1,5 @@
 from django import template
+import re
 
 register = template.Library()
 
@@ -20,7 +21,16 @@ def finished_orders_count(composer):
     except:
         return 0
 
+def remove_lang_code(url):
+    url = re.sub(r'/?(uk|en)/?', "", url)
+
+    if url == '' or url == '/':
+        return ''
+
+    return '/' + url
+
 
 register.filter('finished_orders_count', finished_orders_count)
 register.filter('contains', contains)
 register.filter('is_customer', is_customer)
+register.filter('remove_lang_code', remove_lang_code)

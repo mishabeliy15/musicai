@@ -201,7 +201,7 @@
                                 <button id="play-icon"></button>
                                 <span id="time" class="time">0:00</span>
                                 <input type="range" id="seek-slider" max="100" value="0">
-                                <audio src="/{{ order.file }}" preload="metadata" loop></audio>
+                                <audio src="{% static order.file %}" preload="metadata" loop></audio>
                             </div>
                         </div>
 
@@ -272,7 +272,7 @@
                 body: JSON.stringify(orderData),
             }).then(response => {
                 if(confirmed) {
-                    document.location = '/hold_payment_form/?id=' + id;
+                    document.location = "{% url 'hold_payment_form' %}?id=" + id;
                 }
             })
         }
@@ -311,25 +311,10 @@
         }
 
         function acceptOrder(id, accepted) {
-            document.location = '/get_product_ordered/?id=' + id + '&accept=' + accepted;
+            document.location = "{% url 'get_product_ordered' %}?id=" + id + '&accept=' + accepted;
         }
-
-        /*window.onload = function() {
-            let selectedTabButtonId = document.location.href.substring(document.location.href.indexOf("#") + 1);
-            let tabButtonIds = [ "new", "pending", "in_work", "finished" ];
-            let tabButtons = tabButtonIds.map(id => document.getElementById(id));
-
-            for(let tabButton of tabButtons) {
-                if(tabButton.id == selectedTabButtonId) {
-                    tabButton.click();
-                } else {
-                    //tabButton.checked = false;
-                    //tabButton.dispatchEvent(new Event('changed'));
-                }
-            }
-        }*/
 
     </script>
 
-    <script type="module" src="/static/scripts/audio_player.js"></script>
+    <script type="module" src="{% static 'scripts/audio_player.js' %}"></script>
 {% endblock content %}

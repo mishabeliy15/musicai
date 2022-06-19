@@ -1,17 +1,18 @@
 {% extends 'store/base_sign.html' %}
 {% block content %}
+{% load i18n %}
 
 <div class="header-bar">
-    <h1>Register</h1>
+    <h1>{% translate 'Register' %}</h1>
 </div>
 
 <div class="card-body">
         <div class="btn-group btn-group-toggle btn-block mb-3" data-toggle="buttons">
             <label class="btn btn-secondary {% if active_form == 'customer' %}active{% endif %}">
-                <input type="radio" name="options" id="customer" onchange="processView(this.id)" {% if active_form == 'customer' %} checked {% endif %}">Customer
+                <input type="radio" name="options" id="customer" onchange="processView(this.id)" {% if active_form == 'customer' %} checked {% endif %}">{% translate 'Customer' %}
             </label>
             <label class="btn btn-secondary {% if active_form == 'composer' %}active{% endif %}">
-                <input type="radio" name="options" id="composer" onchange="processView(this.id)" {% if active_form == 'composer' %} checked {% endif %}">Composer
+                <input type="radio" name="options" id="composer" onchange="processView(this.id)" {% if active_form == 'composer' %} checked {% endif %}">{% translate 'Composer' %}
             </label>
         </div>
 
@@ -59,7 +60,7 @@
         <div class="alert alert-danger" role="alert">{{ customer_form.errors.password2 }}</div>
         {% endif %}
 
-        <input style="margin-top:10px ;" class="button" type="submit" value="Register">
+        <input style="margin-top:10px ;" class="button" type="submit" value="{% translate 'Register' %}">
     </form>
 
     <form id="composer-form" method="POST" {% if active_form == 'customer' %} hidden {% endif %}>
@@ -126,9 +127,9 @@
         <div class="alert alert-danger" role="alert">{{ composer_form.errors.password2 }}</div>
         {% endif %}
 
-        <input style="margin-top:10px ;" class="button" type="submit" value="Register">
+        <input style="margin-top:10px ;" class="button" type="submit" value="{% translate 'Register' %}">
     </form>
-    <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+    <p>{% translate 'Already have an account' %}? <a href="{% url 'login' %}">{% translate 'Login' %}</a></p>
 </div>
 
 
@@ -146,10 +147,10 @@
     var customer_form = document.getElementById('customer-form');
     var customer_form_fields = customer_form.querySelectorAll('input')
 
-    customer_form_fields[2].placeholder='Username..';
-    customer_form_fields[3].placeholder='Email..';
-    customer_form_fields[4].placeholder='Enter password...';
-    customer_form_fields[5].placeholder='Re-enter Password...';
+    customer_form_fields[2].placeholder="{% translate 'Username..' %}";
+    customer_form_fields[3].placeholder="{% translate 'Email..' %}";
+    customer_form_fields[4].placeholder="{% translate 'Enter password...' %}";
+    customer_form_fields[5].placeholder="{% translate 'Re-enter Password...' %}";
 
     for (var field in customer_form_fields){
         customer_form_fields[field].className += ' form-control'
@@ -158,12 +159,12 @@
     var composer_form = document.getElementById('composer-form');
     var composer_form_fields = composer_form.querySelectorAll('input')
 
-    composer_form_fields[2].placeholder='Username..';
-    composer_form_fields[3].placeholder='Email..';
-    composer_form_fields[4].placeholder='First name..';
-    composer_form_fields[5].placeholder='Last name..';
-    composer_form_fields[6].placeholder='Enter password...';
-    composer_form_fields[7].placeholder='Re-enter Password...';
+    composer_form_fields[2].placeholder="{% translate 'Username..' %}";
+    composer_form_fields[3].placeholder="{% translate 'Email..' %}";
+    composer_form_fields[4].placeholder="{% translate 'First name..' %}";
+    composer_form_fields[5].placeholder="{% translate 'Last name..' %}";
+    composer_form_fields[6].placeholder="{% translate 'Enter password...' %}";
+    composer_form_fields[7].placeholder="{% translate 'Re-enter Password...' %}";
 
     for (var field in composer_form_fields){
         composer_form_fields[field].className += ' form-control'

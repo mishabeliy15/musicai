@@ -133,7 +133,7 @@
                     body: JSON.stringify(productData),
                 })
 
-                document.location = "/my_music/"
+                document.location = "{% url 'my_music' %}"
             });
         {% endif %}
     </script>

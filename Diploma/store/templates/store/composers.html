@@ -43,7 +43,7 @@
                         <div style="flex:1">{{ composer|finished_orders_count }} orders</div>
 
                         <div style="flex:1">
-                            <a class="btn btn-outline-info  btn-sm btn-block" href="/composer_order/?id={{ composer.id }}">Order</a>
+                            <a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'composer_order' %}?id={{ composer.id }}">Order</a>
                         </div>
                     </div>
                 </div>

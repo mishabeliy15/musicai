@@ -110,7 +110,7 @@
                 body: JSON.stringify(licenseData),
             })
 
-            document.location = '/my_music/'
+            document.location = "{% url 'my_music' %}"
         });
     </script>
     <script src="//static.liqpay.ua/libjs/checkout.js" async></script>

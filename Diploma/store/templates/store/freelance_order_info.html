@@ -137,7 +137,7 @@
                 },
                 body: JSON.stringify(betData),
             }).then(response => response.json())
-              .then(data => document.location = "/hold_payment_form/?id=" + data.id)
+              .then(data => document.location = "{% url 'hold_payment_form' %}?id=" + data.id)
         }
     </script>
 {% endblock content %}

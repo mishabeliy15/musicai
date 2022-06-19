@@ -47,7 +47,7 @@
                             <div class="mb-3 text-info">${{ order.price }}</div>
                             <div class="mb-3 text-secondary font-weight-light">{{ order.bet_set.count }} bet{% if order.bet_set.count != 1 %}s{% endif %}</div>
                             <div>
-                                <a class="btn btn-outline-info btn-sm pr-3 pl-3" href="/freelance_order_info/?id={{ order.id }}">View</a>
+                                <a class="btn btn-outline-info btn-sm pr-3 pl-3" href="{% url 'freelance_order_info' %}?id={{ order.id }}">View</a>
                             </div>
                         </div>
                     </div>
