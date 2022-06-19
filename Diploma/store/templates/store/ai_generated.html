@@ -34,7 +34,7 @@
                             <button id="play-icon"></button>
                             <span id="time" class="time">0:00</span>
                             <input type="range" id="seek-slider" max="100" value="0">
-                            <audio src="{{ style.file }}" preload="metadata" loop></audio>
+                            <audio src="{% static style.file %}" preload="metadata" loop></audio>
                         </div>
                     {% endfor %}
 
