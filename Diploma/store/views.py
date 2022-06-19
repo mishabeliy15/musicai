@@ -337,7 +337,7 @@ def aiGenerate(request):
 
         audios.append(audio)
 
-    context = {'order': order, 'audios': audios}
+    context = {'order': order, 'audios': audios, 'first_instrument': audios[0]['instrument']}
     return render(request, 'store/ai_generated.html', context)
 
 

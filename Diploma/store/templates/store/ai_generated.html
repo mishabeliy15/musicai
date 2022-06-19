@@ -17,12 +17,12 @@
                             <label for="license" class="form-label" style="display: block">Choose instrument</label>
                             <div class="dropdown">
                               <button class="btn btn-secondary dropdown-toggle" style="width: 300px" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <span id="selected_style">Sforzando</span>
+                                  <span id="selected_instrument">{{ first_instrument.name }}</span>
                               </button>
                               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                  <input type="hidden" name="style" id="style" value="Sforzando"/>
+                                  <input type="hidden" name="instrument_id" id="style" value="{{ first_instrument.id }}"/>
                                   {% for audio in audios %}
-                                  <button type="button" class="dropdown-item" onclick="styleChosen('{{ audio.instrument.id }}')">{{ audio.instrument.name }}</button>
+                                  <button type="button" class="dropdown-item" onclick="instrumentChosen('{{ audio.instrument.id }}')">{{ audio.instrument.name }}</button>
                                   {% endfor %}
                               </div>
                             </div>
@@ -30,7 +30,7 @@
                     </div>
 
                     {% for audio in audios %}
-                        <div class="audio-player-container" style="opacity: 1">
+                        <div id="player_{{ audio.instrument.id }}" class="audio-player-container" style="opacity: 1" hidden>
                             <button id="play-icon"></button>
                             <span id="time" class="time">0:00</span>
                             <input type="range" id="seek-slider" max="100" value="0">
@@ -48,7 +48,22 @@
 
     <script type="module" src="{% static 'scripts/audio_player.js' %}"></script>
     <script>
+        function instrumentChosen(instrumentId, instrumentName) {
+            document.getElementById('instrument_id').value = instrumentId;
+            document.getElementById('selected_instrument').value = instrumentName;
+            managePlayersVisibility(instrumentId)
+        }
 
+        function managePlayersVisibility(selectedInstrumentId) {
+            let players = document.getElementsByClassName("audio-player-container")
+            for(let player of players) {
+                if(player.id == 'player_' + selectedInstrumentId) {
+                    player.removeAttribute('hidden');
+                } else {
+                    player.setAttribute('hidden', '');
+                }
+            }
+        }
         /*function genreChosen(genreId, genreName) {
             document.getElementById('genre_id').value = genreId;
             document.getElementById('selected_genre_name').innerHTML = genreName;
