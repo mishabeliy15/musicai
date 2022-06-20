@@ -802,6 +802,7 @@ def checkoutCallback(request):
             order_item.product.composer,
             order.customer,
             order.project,
+            order_item.product,
             order_item.get_price,
             order.customer.personaldata.country,
             order.customer.personaldata.city,
