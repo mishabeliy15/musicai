@@ -319,7 +319,7 @@ def acceptAiOrder(request):
     order = AiOrder.objects.get(id=uuid.UUID(data['id']))
     instrument = Instrument.objects.get(id=data['instrument_id'])
 
-    audio_file = order.file.path.replace('.mid', '') + '_' + instrument.name + '.mpeg'
+    audio_file = order.file.name.replace('.mid', '') + '_' + instrument.name + '.mpeg'
 
     with open(audio_file, 'rb') as f:
         order.accepted = True
