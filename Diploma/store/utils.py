@@ -178,7 +178,7 @@ def verifyPaymentCallback(data, signature, alt_success_status):
 
 
 def print_license(composer, customer, project, product, price, country, city, address, index):
-    tpl = DocxTemplate('../static/files/Music-license-agreement.docx')
+    tpl = DocxTemplate('static/files/Music-license-agreement.docx')
 
     today = date.today()
     month = today.strftime("%B")
