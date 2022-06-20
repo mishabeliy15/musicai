@@ -327,7 +327,7 @@ def acceptAiOrder(request):
     payment_info = createPaymentInfo(
         'pay', price, 'AI composition',
         'ai_' + str(order.id),
-        "http://185.227.108.95/en/ai_order_payment_callback/"
+        "http://185.227.108.95/ai_order_payment_callback/"
     )
 
     return JsonResponse(payment_info)
@@ -493,7 +493,7 @@ def holdPaymentForm(request):
         order.price,
         "Personal order payment",
         "personal_" + str(order.id),
-        "http://185.227.108.95/en/personal_order_hold_payment_callback/"
+        "http://185.227.108.95/personal_order_hold_payment_callback/"
     )
     return render(request, 'store/hold_payment_form.html', payment_info)
 
@@ -775,7 +775,7 @@ def getCheckoutInfo(request):
         order.get_cart_total,
         "Product payment",
         "product_" + str(order.id),
-        "http://185.227.108.95/en/checkout_callback/"
+        "http://185.227.108.95/checkout_callback/"
     )
 
     return JsonResponse(checkout_info)
