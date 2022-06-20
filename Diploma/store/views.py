@@ -816,9 +816,9 @@ def checkoutCallback(request):
             order.customer.personaldata.index
         )
 
-        with open(licence_file, 'rb') as f:
-            order_item.licence_file = File(f)
-            order_item.save()
+        #with open(licence_file, 'rb') as f:
+        #    order_item.licence_file = File(f)
+        #    order_item.save()
 
     order.save()
 
