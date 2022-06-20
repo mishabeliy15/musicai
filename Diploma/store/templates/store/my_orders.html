@@ -60,7 +60,7 @@
                             <div style="flex:2">{{ order.price }}</div>
                             <div style="flex:2">{{ order.composer.first_name }} {{ order.composer.last_name }}</div>
                         {% else %}
-                            <div style="flex:2"><input id="price_{{ order.id }}" type="number" class="form-control" style="width: 90%" value="{{ order.price|floatformat:2 }}"></div>
+                            <div style="flex:2"><input id="price_{{ order.id }}" type="number" class="form-control" style="width: 90%" value="{{ order.price|floatformat:2|replace:',|.' }}"></div>
                             <div style="flex:1"><input onclick="confirmOrder('{{ order.id }}', true)" type="submit" class="btn btn-outline-info  btn-sm" value=" Confirm "/></div>
                             <div style="flex:1"><input onclick="confirmOrder('{{ order.id }}', false)" type="submit" class="btn btn-outline-info  btn-sm" value="  Refuse  " /></div>
                         {% endif %}

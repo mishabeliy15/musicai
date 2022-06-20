@@ -30,7 +30,15 @@ def remove_lang_code(url):
     return '/' + url
 
 
+def replace(value, arg):
+    if len(arg.split('|')) != 2:
+        return value
+
+    what, to = arg.split('|')
+    return value.replace(what, to)
+
 register.filter('finished_orders_count', finished_orders_count)
 register.filter('contains', contains)
 register.filter('is_customer', is_customer)
 register.filter('remove_lang_code', remove_lang_code)
+register.filter('replace', replace)
