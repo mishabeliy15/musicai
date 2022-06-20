@@ -88,7 +88,7 @@
                             <div class="mb-3 text-info">${{ bet.price }}</div>
                             {% if user|is_customer %}
                                 <br>
-                                <input type="submit" onclick="chooseComposer({{ order.id }}, {{ bet.id }})" id="submit" class="btn btn-outline-info  btn-sm btn-block" href="" value="Choose" />
+                                <input type="submit" onclick="chooseComposer('{{ order.id }}', {{ bet.id }})" id="submit" class="btn btn-outline-info  btn-sm btn-block" href="" value="Choose" />
                             {% endif %}
                         </div>
                     </div>

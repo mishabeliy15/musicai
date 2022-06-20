@@ -87,7 +87,7 @@
             e.preventDefault();
 
             let licenseData = {
-                "order_id": {{ order.id }},
+                "order_id": '{{ order.id }}',
                 "accepted": {% if accepted %}true{% else %}false{% endif %},
                 "mark": productOrderedForm.rating3.value,
                 "text": productOrderedForm.rtext.value,

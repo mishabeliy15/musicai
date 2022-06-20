@@ -111,7 +111,7 @@
                     'Content-Type':'application/json',
                     'X-CSRFToken':csrftoken,
                 },
-                body:JSON.stringify({'id': {{ order.id }} })
+                body:JSON.stringify({'id': '{{ order.id }}' })
             })
             .then(response => document.location.reload())
         }

@@ -61,8 +61,8 @@
                             <div style="flex:2">{{ order.composer.first_name }} {{ order.composer.last_name }}</div>
                         {% else %}
                             <div style="flex:2"><input id="price_{{ order.id }}" type="number" class="form-control" style="width: 90%" value="{{ order.price|floatformat:2 }}"></div>
-                            <div style="flex:1"><input onclick="confirmOrder({{ order.id }}, true)" type="submit" class="btn btn-outline-info  btn-sm" value=" Confirm "/></div>
-                            <div style="flex:1"><input onclick="confirmOrder({{ order.id }}, false)" type="submit" class="btn btn-outline-info  btn-sm" value="  Refuse  " /></div>
+                            <div style="flex:1"><input onclick="confirmOrder('{{ order.id }}', true)" type="submit" class="btn btn-outline-info  btn-sm" value=" Confirm "/></div>
+                            <div style="flex:1"><input onclick="confirmOrder('{{ order.id }}', false)" type="submit" class="btn btn-outline-info  btn-sm" value="  Refuse  " /></div>
                         {% endif %}
                 </div>
                 {% endfor %}
@@ -105,8 +105,8 @@
 
                         {% if request.user|is_customer %}
                             <div style="flex:2">{{order.composer.first_name}} {{order.composer.last_name}}</div>
-                            <div style="flex:1"><input onclick="customerConfirmOrder({{ order.id }}, true)" type="submit" class="btn btn-outline-info  btn-sm" value=" Confirm "/></div>
-                            <div style="flex:1"><input onclick="customerConfirmOrder({{ order.id }}, false)" type="submit" class="btn btn-outline-info  btn-sm" value="  Refuse  " /></div>
+                            <div style="flex:1"><input onclick="customerConfirmOrder('{{ order.id }}', true)" type="submit" class="btn btn-outline-info  btn-sm" value=" Confirm "/></div>
+                            <div style="flex:1"><input onclick="customerConfirmOrder('{{ order.id }}', false)" type="submit" class="btn btn-outline-info  btn-sm" value="  Refuse  " /></div>
                         {% endif %}
 
                 </div>
@@ -152,7 +152,7 @@
                             <div style="flex:2">{{order.composer.first_name}} {{order.composer.last_name}}</div>
                         {% else %}
                             <div style="flex:3"><input type="file" id="file_{{ order.id }}" accept="audio/*" name="pfile"></div>
-                            <div style="flex:1"><input onclick="sendFile({{ order.id }})" type="submit" class="btn btn-outline-info  btn-sm" value="  Send  " /></div>
+                            <div style="flex:1"><input onclick="sendFile('{{ order.id }}')" type="submit" class="btn btn-outline-info  btn-sm" value="  Send  " /></div>
                         {% endif %}
                 </div>
                 {% endfor %}
@@ -207,8 +207,8 @@
 
                         {% if request.user|is_customer %}
                             <div style="flex:2">{{order.composer.first_name}} {{order.composer.last_name}}</div>
-                            <div style="flex:1"><input onclick="acceptOrder({{ order.id }}, true)" type="submit" class="btn btn-outline-info  btn-sm" value=" Confirm "/></div>
-                            <div style="flex:1"><input onclick="acceptOrder({{ order.id }}, false)" type="submit" class="btn btn-outline-info  btn-sm" value="  Refuse  " /></div>
+                            <div style="flex:1"><input onclick="acceptOrder('{{ order.id }}', true)" type="submit" class="btn btn-outline-info  btn-sm" value=" Confirm "/></div>
+                            <div style="flex:1"><input onclick="acceptOrder('{{ order.id }}', false)" type="submit" class="btn btn-outline-info  btn-sm" value="  Refuse  " /></div>
                         {% else %}
                             <div style="flex:1">{{ order.accept }}</div>
                             <div style="flex:2">{{ order.price|floatformat:2 }}</div>
