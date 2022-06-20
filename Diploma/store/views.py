@@ -280,7 +280,7 @@ def aiOrder(request):
     data = cartData(request)
     cartCount = data['cartCount']
 
-    context = { 'cartCount': cartCount, 'genres': Genre.objects.all() }
+    context = {'cartCount': cartCount, 'genres': Genre.objects.all()}
 
     return render(request, 'store/ai_order.html', context)
 

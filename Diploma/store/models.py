@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import uuid
 
 
 class Customer(models.Model):
@@ -126,6 +127,7 @@ class Product(models.Model):
 
 
 class Order(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)
     date_ordered = models.DateTimeField(auto_now_add=True)
     complete = models.BooleanField(max_length=200, null=True)
@@ -179,6 +181,7 @@ class PersonalData(models.Model):
 
 
 class ComposerOrder(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=200, null=True)
     premium = models.BooleanField(max_length=200, null=True)
     composer = models.ForeignKey(Composer, on_delete=models.SET_NULL, blank=True, null=True)
@@ -197,6 +200,7 @@ class ComposerOrder(models.Model):
 
 
 class FreelanceOrder(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=200, null=True)
     description = models.CharField(max_length=500, null=True)
     premium = models.BooleanField(max_length=200, null=True)
@@ -228,6 +232,7 @@ class Feedback(models.Model):
 
 
 class AiOrder(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, blank=True, null=True)
     genre = models.ForeignKey(Genre, on_delete=models.SET_NULL, blank=True, null=True)
     is_premium = models.BooleanField(max_length=200, null=True)
