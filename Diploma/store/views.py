@@ -790,7 +790,7 @@ def checkoutCallback(request):
     try:
         order_id = data_object["order_id"].replace("product_", "")
         print(order_id)
-        order = Order.objects.get(id=order_id)
+        order = Order.objects.get(id=uuid.UUID(order_id))
         print(order)
     except:
         raise Http404()
