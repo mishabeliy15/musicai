@@ -244,4 +244,5 @@ class AiOrder(models.Model):
     license_file = models.FileField(upload_to='files/', max_length=200, null=True)
     price = models.FloatField(default=5)
     project = models.CharField(max_length=200, null=True)
+    duration = models.IntegerField(default=15)
 
