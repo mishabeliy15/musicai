@@ -789,7 +789,9 @@ def checkoutCallback(request):
 
     try:
         order_id = data_object["order_id"].replace("product_", "")
+        print(order_id)
         order = Order.objects.get(id=order_id)
+        print(order)
     except:
         raise Http404()
 
@@ -799,7 +801,11 @@ def checkoutCallback(request):
     order.complete = True
     order.transaction_id = data_object["payment_id"]
 
+    print(order)
+
     for order_item in order.orderitem_set.all():
+        print(order_item)
+
         price = order_item.product.premium_price if order_item.premium else order_item.product.standard_price
         order_item.product.composer.balance += float(price) * COMPOSER_NET_INCOME_PERCENT
         order_item.product.composer.save()
@@ -816,9 +822,9 @@ def checkoutCallback(request):
             order.customer.personaldata.index
         )
 
-        #with open(licence_file, 'rb') as f:
-        #    order_item.licence_file = File(f)
-        #    order_item.save()
+        with open(licence_file, 'rb') as f:
+            order_item.licence_file = File(f)
+            order_item.save()
 
     order.save()
 
