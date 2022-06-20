@@ -10,7 +10,7 @@ import base64
 from docxtpl import DocxTemplate
 from datetime import date
 import uuid
-from docx2pdf import convert
+#from docx2pdf import convert
 import os
 
 from django.core.exceptions import PermissionDenied, ValidationError
@@ -208,7 +208,8 @@ def print_license(composer, customer, project, product, price, country, city, ad
 
     tpl.save(doc_file_name)
 
-    convert(doc_file_name)
-    os.remove(doc_file_name)
+    #convert(doc_file_name)
+    #os.remove(doc_file_name)
 
-    return file_name + '.pdf'
+    #return file_name + '.pdf'
+    return doc_file_name
