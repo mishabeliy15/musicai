@@ -19,7 +19,7 @@
                 </div>
                 <h6><strong>{{ product.name }}</strong></h6>
                 <hr>
-                {% if request.user|is_customer %}
+                {% if not request.user.is_authenticated or request.user|is_customer %}
                 <div class="dropdown">
                     <button class="btn btn-outline-secondary add-btn">{% translate 'Buy' %}</button>
                     <div class="dropdown-content">
