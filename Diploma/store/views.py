@@ -319,10 +319,12 @@ def acceptAiOrder(request):
     order = AiOrder.objects.get(id=uuid.UUID(data['id']))
     instrument = Instrument.objects.get(id=data['instrument_id'])
 
-    order.accepted = True
-    order.audio_file = File(order.file.path.replace('.mid', '') + '_' + instrument.name + '.mpeg')
+    audio_file = order.file.path.replace('.mid', '') + '_' + instrument.name + '.mpeg'
 
-    order.save()
+    with open(audio_file, 'rb') as f:
+        order.accepted = True
+        order.audio_file = File(f)
+        order.save()
 
     payment_info = createPaymentInfo(
         'pay', order.price, 'AI composition',
