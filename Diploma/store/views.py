@@ -799,10 +799,10 @@ def checkoutCallback(request):
         order_item.product.composer.save()
 
         licence_file = print_license(
-            order_item.product.composer,
-            order.customer,
+            order_item.product.composer.name,
+            order.customer.name,
             order.project,
-            order_item.product,
+            order_item.product.name,
             order_item.get_price,
             order.customer.personaldata.country,
             order.customer.personaldata.city,
