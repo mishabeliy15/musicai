@@ -241,5 +241,7 @@ class AiOrder(models.Model):
     completed = models.BooleanField(max_length=200, default=False)
     file = models.FileField(upload_to='files/', max_length=200, null=True)
     audio_file = models.FileField(upload_to='files/', max_length=200, null=True)
+    license_file = models.FileField(upload_to='files/', max_length=200, null=True)
+    price = models.FloatField()
     project = models.CharField(max_length=200, null=True)
 

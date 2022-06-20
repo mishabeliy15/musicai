@@ -73,7 +73,7 @@
             let orderData = {
                 "project" : orderForm.project.value,
                 "genre_id": orderForm.genre_id.value,
-                "is_premium": orderForm.premium.value == 'on'
+                "is_premium": orderForm.premium.checked
             };
 
             await fetch('/ai_prepare/',{

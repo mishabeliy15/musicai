@@ -164,9 +164,10 @@ def my_music(request):
         cartCount = data['cartCount']
         items = OrderItem.objects.filter(order__complete=True, order__customer=client)
         composer_orders = ComposerOrder.objects.filter(customer=client, accept=True)
+        ai_orders = AiOrder.objects.filter(customer=client, completed=True)
 
         context = {'items': items, 'cartCount': cartCount, 'client': client,
-                   'is_composer': is_composer, 'composer_orders': composer_orders}
+                   'is_composer': is_composer, 'composer_orders': composer_orders, 'ai_orders': ai_orders}
     except:
         client = request.user.composer
         products = Product.objects.filter(composer=client)
@@ -294,7 +295,8 @@ def aiOrderPrepare(request):
             'customer': request.user.customer,
             'genre_id': data['genre_id'],
             'is_premium': data['is_premium'],
-            'project': data['project']
+            'project': data['project'],
+            'price': 15 if data['is_premium'] else 5
         }
     )
 
@@ -322,10 +324,8 @@ def acceptAiOrder(request):
 
     order.save()
 
-    price = 15 if order.is_premium else 5
-
     payment_info = createPaymentInfo(
-        'pay', price, 'AI composition',
+        'pay', order.price, 'AI composition',
         'ai_' + str(order.id),
         "http://185.227.108.95/ai_order_payment_callback/"
     )
@@ -347,6 +347,22 @@ def aiOrderPaymentCallback(request):
 
     if order.completed:
         raise ValidationError("Order is already completed")
+
+    license_file = print_license(
+        "MSpace",
+        order.customer,
+        order.project,
+        order.project,
+        order.price,
+        order.customer.personaldata.country,
+        order.customer.personaldata.city,
+        order.customer.personaldata.address,
+        order.customer.personaldata.index
+    )
+
+    with open(license_file, 'rb') as f:
+        order.license_file = File(f)
+        order.save()
 
     order.completed = True
     order.save()
