@@ -18,7 +18,7 @@ from django.http import Http404, HttpResponse
 
 from .models import *
 from .templatetags.filters import is_customer
-from .utils import cartData, guestOrder, createPaymentInfo, verifyPaymentCallback, confirmOrRefuseHold
+from .utils import cartData, guestOrder, createPaymentInfo, verifyPaymentCallback, confirmOrRefuseHold, print_license
 
 from .forms import CreateCustomerForm, CreateComposerForm
 from django.contrib import messages
@@ -799,6 +799,19 @@ def checkoutCallback(request):
         price = order_item.product.premium_price if order_item.premium else order_item.product.standard_price
         order_item.product.composer.balance += float(price) * COMPOSER_NET_INCOME_PERCENT
         order_item.product.composer.save()
+
+        licence_file = print_license(
+            order_item.product.composer,
+            order.customer,
+            order.project,
+            order_item.get_price,
+            order.customer.personaldata.country,
+            order.customer.personaldata.city,
+            order.customer.personaldata.address,
+            order.customer.personaldata.index
+        )
+
+        order_item.licence_file = File(licence_file)
 
     order.save()
 

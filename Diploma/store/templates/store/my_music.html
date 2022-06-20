@@ -107,7 +107,7 @@
                                 <tr><td><img class="desc-icon" src="{{ emotion.image_url }}" title="{{ emotion.name }}"></td></tr>
                             {% endfor %}</table>
 
-                            <div style="flex:1"><button class="download-button"><i class="fa fa-download"></i></button></div>
+                            <div style="flex:1"><a href="{% static item.licence_file %}" download><button class="download-button"><i class="fa fa-download"></i></button></a></div>
                             <div style="flex:1"><a href="{% static item.product.file %}" download><button class="download-button"><i class="fa fa-download"></i></button></a></div>
                         </div>
                     {% endfor %}

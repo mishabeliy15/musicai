@@ -151,6 +151,7 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, blank=True, null=True)
     date_added = models.DateTimeField(auto_now_add=True)
     premium = models.BooleanField(max_length=200, null=True)
+    licence_file = models.FileField(upload_to='files/', max_length=200, null=True)
 
     def __str__(self):
         return self.product.name

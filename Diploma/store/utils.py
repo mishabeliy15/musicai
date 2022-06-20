@@ -7,6 +7,12 @@ from .models import *
 import hashlib
 import base64
 
+from docxtpl import DocxTemplate
+from datetime import date
+import uuid
+from docx2pdf import convert
+import os
+
 from django.core.exceptions import PermissionDenied, ValidationError
 
 PUBLIC_KEY = 'sandbox_i82775220823'
@@ -171,3 +177,38 @@ def verifyPaymentCallback(data, signature, alt_success_status):
     return data_object
 
 
+def print_license(composer, customer, project, product, price, country, city, address, index):
+    tpl = DocxTemplate('Music-license-agreement.docx')
+
+    today = date.today()
+    month = today.strftime("%B")
+    day = str(today.day)
+    year = str(today.year)
+    guid = str(uuid.uuid1())
+
+    context = {
+        'month': month,
+        'day': day,
+        'year': year,
+        'composer': composer,
+        'customer': customer,
+        'project': project,
+        'product': product,
+        'price': price,
+        'country': country,
+        'address': address,
+        'city': city,
+        'index': index,
+    }
+
+    tpl.render(context)
+
+    file_name = 'Music-license-agreement_' + product + '_' + guid
+    doc_file_name = file_name + '.docx'
+
+    tpl.save(doc_file_name)
+
+    convert(doc_file_name)
+    os.remove(doc_file_name)
+
+    return file_name + '.pdf'
