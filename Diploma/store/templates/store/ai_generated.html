@@ -69,7 +69,7 @@
         managePlayersVisibility({{ first_instrument.id }})
 
         function acceptOrder() {
-            instrumentId = document.getElementById('instrument_id').value;
+            let instrumentId = parseInt(document.getElementById('instrument_id').value);
             fetch('/accept_ai_order/', {
                 method:'POST',
                 headers:{

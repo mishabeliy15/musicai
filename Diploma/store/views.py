@@ -316,8 +316,6 @@ def resetAiOrder(request):
 
 def acceptAiOrder(request):
     data = json.loads(request.body)
-    print(data)
-
     order = AiOrder.objects.get(id=uuid.UUID(data['id']))
     instrument = Instrument.objects.get(id=data['instrument_id'])
 
