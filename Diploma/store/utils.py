@@ -203,13 +203,11 @@ def print_license(composer, customer, project, product, price, country, city, ad
 
     tpl.render(context)
 
-    file_name = 'Music-license-agreement_' + product + '_' + guid
-    doc_file_name = file_name + '.docx'
-
-    tpl.save(doc_file_name)
+    file_name = 'static/files/Music-license-agreement_' + product + '_' + guid + '.docx'
+    tpl.save(file_name)
 
     #convert(doc_file_name)
     #os.remove(doc_file_name)
 
     #return file_name + '.pdf'
-    return doc_file_name
+    return file_name
