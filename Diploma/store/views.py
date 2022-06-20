@@ -352,7 +352,7 @@ def aiOrderPaymentCallback(request):
 
     license_file = print_license(
         "MSpace",
-        order.customer,
+        order.customer.personaldata.first_name + ' ' + order.customer.personaldata.last_name,
         order.project,
         order.project,
         order.price,

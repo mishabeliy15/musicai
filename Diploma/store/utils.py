@@ -179,8 +179,8 @@ def verifyPaymentCallback(data, signature, alt_success_status):
 
 def get_license(composer, customer, project, product, price):
     return print_license(
-        composer.name,
-        customer.name,
+        composer.first_name + ' ' + composer.last_name,
+        customer.personaldata.first_name + ' ' + customer.personaldata.last_name,
         project,
         product,
         price,
