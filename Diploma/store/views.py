@@ -345,10 +345,10 @@ def aiOrderPaymentCallback(request):
     except:
         raise Http404()
 
-    if order.complete:
+    if order.completed:
         raise ValidationError("Order is already completed")
 
-    order.complete = True
+    order.completed = True
     order.save()
 
     return HttpResponse(status=200)
