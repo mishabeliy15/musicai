@@ -76,7 +76,7 @@
                     'Content-Type':'application/json',
                     'X-CSRFToken':csrftoken,
                 },
-                body:JSON.stringify({'id': {{ order.id }}, 'instrument_id': instrumentId })
+                body:JSON.stringify({'id': '{{ order.id }}', 'instrument_id': instrumentId })
             })
             .then(response => response.json())
             .then(data => {
