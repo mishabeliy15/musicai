@@ -516,8 +516,7 @@ def holdPaymentForm(request):
         order.price,
         "Personal order payment",
         "personal_" + str(order.id),
-        "http://185.227.108.95/personal_order_hold_payment_callback/",
-        "http://185.227.108.95/my_orders/"
+        "http://185.227.108.95/personal_order_hold_payment_callback/"
     )
     return render(request, 'store/hold_payment_form.html', payment_info)
 

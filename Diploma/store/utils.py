@@ -117,7 +117,7 @@ def getSignature(data_base64):
     return str(base64.b64encode(signature), 'utf-8')
 
 
-def createPaymentInfo(action, price, description, order_id, callback_url, return_url=None):
+def createPaymentInfo(action, price, description, order_id, callback_url):
     payment_info = {
         "public_key": PUBLIC_KEY,
         "action": action,
@@ -128,9 +128,6 @@ def createPaymentInfo(action, price, description, order_id, callback_url, return
         "server_url": callback_url,
         "version": "3"
     }
-
-    if return_url is not None:
-        payment_info["result_url"] = return_url
 
     payment_info_json = json.dumps(payment_info)
     payment_info_base64 = str(base64.b64encode(bytes(payment_info_json, 'utf-8')), 'utf-8')
