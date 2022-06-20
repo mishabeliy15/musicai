@@ -418,19 +418,20 @@ def getPolyphonyCommand(guid, duration):
                 --bundle_file=magenta/models/polyphony_rnn.mag \
                 --output_dir=generated/' + guid + ' \
                 --num_outputs=1 \
-                --num_steps=' + steps + ' \
+                --num_steps=' + str(steps) + ' \
                 --primer_pitches="[67,64,60]" \
                 --condition_on_primer=true \
                 --inject_primer_during_generation=false'
 
 
 def getMelodyCommand(guid, duration):
+    steps = 128 * duration / 16
     return 'python3 magenta/magenta/models/melody_rnn/melody_rnn_generate.py \
             --config=attention_rnn \
             --bundle_file=magenta/models/attention_rnn.mag \
             --output_dir=generated/' + guid + ' \
             --num_outputs=1 \
-            --num_steps=128 \
+            --num_steps=' + str(steps) + ' \
             --primer_melody="[60]"'
 
 
