@@ -408,7 +408,10 @@ def aiGenerate(request):
 
         audios.append(audio)
 
-    context = {'order': order, 'audios': audios, 'first_instrument': audios[0]['instrument']}
+    data = cartData(request)
+    cartCount = data['cartCount']
+
+    context = {'order': order, 'audios': audios, 'first_instrument': audios[0]['instrument'], 'cartCount': cartCount}
     return render(request, 'store/ai_generated.html', context)
 
 
@@ -513,7 +516,8 @@ def holdPaymentForm(request):
         order.price,
         "Personal order payment",
         "personal_" + str(order.id),
-        "http://185.227.108.95/personal_order_hold_payment_callback/"
+        "http://185.227.108.95/personal_order_hold_payment_callback/",
+        "http://185.227.108.95/my_orders/"
     )
     return render(request, 'store/hold_payment_form.html', payment_info)
 
