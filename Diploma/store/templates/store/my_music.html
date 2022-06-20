@@ -95,7 +95,7 @@
                             <div style="flex:1"><img class="row-image" src="{{ item.product.image_url }}"></div>
                             <div style="flex:2">{{ item.product.name }}</div>
 
-                            <div style="flex:2"><p>{{ item.project|default:'—' }}</p></div>
+                            <div style="flex:2"><p>{{ item.order.project|default:'—' }}</p></div>
 
                             <table style="flex:1;">{% for genre in item.product.genres.all %}
                                 <tr><td><img class="desc-icon" src="{{ genre.image_url }}" title="{{ genre.name }}"></td></tr>
