@@ -212,7 +212,7 @@ def myFreelance(request):
 
 
 def freelanceOrderInfo(request):
-    order = FreelanceOrder.objects.get(id=request.GET["id"])
+    order = FreelanceOrder.objects.get(id=uuid.UUID(request.GET["id"]))
     try:
         placed_bet = order.bet_set.get(composer=request.user.composer)
 
@@ -304,7 +304,7 @@ def aiOrderPrepare(request):
 
 def resetAiOrder(request):
     data = json.loads(request.body)
-    order = AiOrder.objects.get(id=data['id'])
+    order = AiOrder.objects.get(id=uuid.UUID(data['id']))
 
     order.accepted = False
     order.save()
@@ -314,7 +314,7 @@ def resetAiOrder(request):
 
 def acceptAiOrder(request):
     data = json.loads(request.body)
-    order = AiOrder.objects.get(id=data['id'])
+    order = AiOrder.objects.get(id=uuid.UUID(data['id']))
     instrument = Instrument.objects.get(id=data['instrument_id'])
 
     order.accepted = True
@@ -341,7 +341,7 @@ def aiOrderPaymentCallback(request):
 
     try:
         order_id = data_object["order_id"].replace("ai_", "")
-        order = AiOrder.objects.get(id=order_id)
+        order = AiOrder.objects.get(id=uuid.UUID(order_id))
     except:
         raise Http404()
 
@@ -356,7 +356,7 @@ def aiOrderPaymentCallback(request):
 
 def aiGenerate(request):
     order_id = request.GET['id']
-    order = AiOrder.objects.get(id=order_id)
+    order = AiOrder.objects.get(id=uuid.UUID(order_id))
 
     if not order.accepted:
         guid = str(uuid.uuid4().hex)
@@ -418,7 +418,7 @@ def getMelodyCommand(guid):
 def betSave(request):
     data = json.loads(request.body)
 
-    order = FreelanceOrder.objects.get(id=data["order_id"])
+    order = FreelanceOrder.objects.get(id=uuid.UUID(data["order_id"]))
 
     bet = Bet(
         text=data["text"],
@@ -460,7 +460,7 @@ def chooseComposer(request):
 def orderComposerConfirm(request):
     data = json.loads(request.body)
 
-    order = ComposerOrder.objects.get(id=data["order_id"])
+    order = ComposerOrder.objects.get(id=uuid.UUID(data["order_id"]))
     order.confirm = data["confirmed"]
 
     #if order.confirm and order.price == float(data["price"]):
@@ -478,7 +478,7 @@ def orderComposerConfirm(request):
 def orderCustomerConfirm(request):
     data = json.loads(request.body)
 
-    order = ComposerOrder.objects.get(id=data["order_id"])
+    order = ComposerOrder.objects.get(id=uuid.UUID(data["order_id"]))
 
     if not data["confirmed"]:
         order.delete()
@@ -487,7 +487,7 @@ def orderCustomerConfirm(request):
 
 
 def holdPaymentForm(request):
-    order = ComposerOrder.objects.get(id=request.GET["id"])
+    order = ComposerOrder.objects.get(id=uuid.UUID(request.GET["id"]))
     payment_info = createPaymentInfo(
         'hold',
         order.price,
@@ -509,7 +509,7 @@ def personalOrderHoldPaymentCallback(request):
 
     try:
         order_id = data_object["order_id"].replace("personal_", "")
-        order = ComposerOrder.objects.get(id=order_id)
+        order = ComposerOrder.objects.get(id=uuid.UUID(order_id))
     except:
         raise Http404()
 
@@ -525,7 +525,7 @@ def personalOrderHoldPaymentCallback(request):
 def sendFile(request):
     data = json.loads(request.body)
 
-    order = ComposerOrder.objects.get(id=data["order_id"])
+    order = ComposerOrder.objects.get(id=uuid.UUID(data["order_id"]))
     order.file = getContentFile(data["file"], order.file)
     order.finish = True
 
@@ -537,7 +537,7 @@ def sendFile(request):
 def getProductOrdered(request):
     orderId = request.GET["id"]
     accepted = request.GET["accept"] == 'true'
-    order = ComposerOrder.objects.get(id=orderId)
+    order = ComposerOrder.objects.get(id=uuid.UUID(orderId))
 
     data = cartData(request)
     cartCount = data['cartCount']
@@ -565,7 +565,7 @@ def profileSave(request):
 def acceptOrder(request):
     data = json.loads(request.body)
 
-    order = ComposerOrder.objects.get(id=data["order_id"])
+    order = ComposerOrder.objects.get(id=uuid.UUID(data["order_id"]))
 
     if data["accepted"]:
         confirmOrRefuseHold("hold_completion", "personal_" + str(order.id))
@@ -789,9 +789,7 @@ def checkoutCallback(request):
 
     try:
         order_id = data_object["order_id"].replace("product_", "")
-        print(order_id)
         order = Order.objects.get(id=uuid.UUID(order_id))
-        print(order)
     except:
         raise Http404()
 
@@ -801,11 +799,7 @@ def checkoutCallback(request):
     order.complete = True
     order.transaction_id = data_object["payment_id"]
 
-    print(order)
-
     for order_item in order.orderitem_set.all():
-        print(order_item)
-
         price = order_item.product.premium_price if order_item.premium else order_item.product.standard_price
         order_item.product.composer.balance += float(price) * COMPOSER_NET_INCOME_PERCENT
         order_item.product.composer.save()
