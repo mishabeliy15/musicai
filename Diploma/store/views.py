@@ -340,7 +340,7 @@ def aiOrderPaymentCallback(request):
     data_object = verifyPaymentCallback(data, signature, "success")
 
     try:
-        order_id = int(data_object["order_id"].replace("ai_", ""))
+        order_id = data_object["order_id"].replace("ai_", "")
         order = AiOrder.objects.get(id=order_id)
     except:
         raise Http404()
@@ -508,7 +508,7 @@ def personalOrderHoldPaymentCallback(request):
         return HttpResponse(status=200)
 
     try:
-        order_id = int(data_object["order_id"].replace("personal_", ""))
+        order_id = data_object["order_id"].replace("personal_", "")
         order = ComposerOrder.objects.get(id=order_id)
     except:
         raise Http404()
@@ -788,7 +788,7 @@ def checkoutCallback(request):
     data_object = verifyPaymentCallback(data, signature, "success")
 
     try:
-        order_id = int(data_object["order_id"].replace("product_", ""))
+        order_id = data_object["order_id"].replace("product_", "")
         order = Order.objects.get(id=order_id)
     except:
         raise Http404()
