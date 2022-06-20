@@ -133,7 +133,7 @@
                         {% if not is_composer %}
                             <div style="flex:2"><p>{{ order.project|default:'—' }}</p></div>
                             <div style="flex:2"><p>{{ order.composer.name }}</p></div>
-                            <div style="flex:1"><button class="download-button"><i class="fa fa-download"></i></button></div>
+                            <div style="flex:1"><a href="{% static order.license_file %}" download><button class="download-button"><i class="fa fa-download"></i></button></a></div>
                         {% else %}
                             <div style="flex:1" onbeforeload="getMark({{ order.feedback.mark }})">
                                 <span class="fa fa-star {% if order.feedback.mark >= 1 %}checked{% endif %}" id="m1"></span>

@@ -18,7 +18,7 @@ from django.http import Http404, HttpResponse
 
 from .models import *
 from .templatetags.filters import is_customer
-from .utils import cartData, guestOrder, createPaymentInfo, verifyPaymentCallback, confirmOrRefuseHold, print_license
+from .utils import cartData, guestOrder, createPaymentInfo, verifyPaymentCallback, confirmOrRefuseHold, print_license, get_license
 
 from .forms import CreateCustomerForm, CreateComposerForm
 from django.contrib import messages
@@ -580,6 +580,18 @@ def acceptOrder(request):
     if order.accept:
         order.project = data["project"]
 
+        license_file = get_license(
+            order.composer,
+            order.customer,
+            order.project,
+            order.name,
+            order.price
+        )
+
+        with open(license_file, 'rb') as f:
+            order.license_file = File(f)
+            order.save()
+
         request.user.customer.personaldata.first_name = data["first_name"]
         request.user.customer.personaldata.last_name = data["last_name"]
         request.user.customer.personaldata.country = data["country"]
@@ -804,19 +816,15 @@ def checkoutCallback(request):
         order_item.product.composer.balance += float(price) * COMPOSER_NET_INCOME_PERCENT
         order_item.product.composer.save()
 
-        licence_file = print_license(
-            order_item.product.composer.name,
-            order.customer.name,
+        license_file = get_license(
+            order_item.product.composer,
+            order.customer,
             order.project,
             order_item.product.name,
-            order_item.get_price,
-            order.customer.personaldata.country,
-            order.customer.personaldata.city,
-            order.customer.personaldata.address,
-            order.customer.personaldata.index
+            order_item.get_price
         )
 
-        with open(licence_file, 'rb') as f:
+        with open(license_file, 'rb') as f:
             order_item.licence_file = File(f)
             order_item.save()
 

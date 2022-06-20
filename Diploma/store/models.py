@@ -188,6 +188,7 @@ class ComposerOrder(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)
     description = models.CharField(max_length=500, null=True)
     file = models.FileField(upload_to='files/', max_length=200, null=True)
+    license_file = models.FileField(upload_to='files/', max_length=200, null=True)
     price = models.FloatField()
     confirm = models.BooleanField(max_length=200, null=True)
     customer_confirm = models.BooleanField(max_length=200, null=True)

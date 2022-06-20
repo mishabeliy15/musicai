@@ -211,7 +211,7 @@
                             <div style="flex:1"><input onclick="acceptOrder('{{ order.id }}', false)" type="submit" class="btn btn-outline-info  btn-sm" value="  Refuse  " /></div>
                         {% else %}
                             <div style="flex:1">{{ order.accept }}</div>
-                            <div style="flex:2">{{ order.price|floatformat:2 }}</div>
+                            <div style="flex:2">{{ order.feedback.mark|default:'' }}</div>
                         {% endif %}
 
                 </div>

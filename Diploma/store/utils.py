@@ -177,6 +177,20 @@ def verifyPaymentCallback(data, signature, alt_success_status):
     return data_object
 
 
+def get_license(composer, customer, project, product, price):
+    return print_license(
+        composer.name,
+        customer.name,
+        project,
+        product,
+        price,
+        customer.personaldata.country,
+        customer.personaldata.city,
+        customer.personaldata.address,
+        customer.personaldata.index
+    )
+
+
 def print_license(composer, customer, project, product, price, country, city, address, index):
     tpl = DocxTemplate('static/files/Music-license-agreement.docx')
 
