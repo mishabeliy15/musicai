@@ -413,7 +413,7 @@ def aiGenerate(request):
 
 
 def getPolyphonyCommand(guid, duration):
-    steps = 128 * duration / 16
+    steps = int(128 * duration / 16.0)
     return 'python3 magenta/magenta/models/polyphony_rnn/polyphony_rnn_generate.py \
                 --bundle_file=magenta/models/polyphony_rnn.mag \
                 --output_dir=generated/' + guid + ' \
@@ -425,7 +425,7 @@ def getPolyphonyCommand(guid, duration):
 
 
 def getMelodyCommand(guid, duration):
-    steps = 128 * duration / 16
+    steps = int(128 * duration / 16.0)
     return 'python3 magenta/magenta/models/melody_rnn/melody_rnn_generate.py \
             --config=attention_rnn \
             --bundle_file=magenta/models/attention_rnn.mag \
