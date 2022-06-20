@@ -811,6 +811,7 @@ def checkoutCallback(request):
         )
 
         order_item.licence_file = File(licence_file)
+        order_item.save()
 
     order.save()
 
