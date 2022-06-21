@@ -25,7 +25,6 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
-from django.urls import reverse
 
 
 COMPOSER_NET_INCOME_PERCENT = 0.9
@@ -192,7 +191,7 @@ def composers(request):
 
 
 def freelanceList(request):
-    freelance_list = reverse(FreelanceOrder.objects.all())
+    freelance_list = reversed(FreelanceOrder.objects.all())
     context = {'freelance_list': freelance_list}
 
     return render(request, 'store/freelance_list.html', context)
