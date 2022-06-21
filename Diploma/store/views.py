@@ -190,7 +190,7 @@ def composers(request):
 
 
 def freelanceList(request):
-    freelance_list = FreelanceOrder.objects.all()
+    freelance_list = FreelanceOrder.objects.all().reverse()
     context = {'freelance_list': freelance_list}
 
     return render(request, 'store/freelance_list.html', context)
