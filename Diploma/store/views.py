@@ -190,8 +190,7 @@ def composers(request):
 
 
 def freelanceList(request):
-    freelance_list = list(FreelanceOrder.objects.all())
-    freelance_list = reversed(freelance_list)
+    freelance_list = reversed(list(FreelanceOrder.objects.all()))
     context = {'freelance_list': freelance_list}
 
     return render(request, 'store/freelance_list.html', context)
@@ -208,6 +207,7 @@ def myFreelance(request):
 
         cartCount = None
 
+    freelance_list = reversed(list(freelance_list))
     context = {'freelance_list': freelance_list, 'cartCount': cartCount}
 
     return render(request, 'store/freelance_list.html', context)
