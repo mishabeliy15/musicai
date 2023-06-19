@@ -1,0 +1,6 @@
+django
+midi2audio
+requests
+docxtpl
+Pillow
+invoke
