@@ -2,4 +2,4 @@ build:
   docker:
     web: Dockerfile
 run:
-  web: /bin/bash -c exec invoke run
+  web: exec invoke run
