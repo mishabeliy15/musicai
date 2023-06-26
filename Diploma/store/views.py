@@ -327,10 +327,11 @@ def acceptAiOrder(request):
         order.audio_file = File(f)
         order.save()
 
+    base_url = request.build_absolute_uri('/')[:-1]
     payment_info = createPaymentInfo(
         'pay', order.price, 'AI composition',
         'ai_' + str(order.id),
-        "http://185.227.108.95/ai_order_payment_callback/"
+        f"{base_url}/ai_order_payment_callback/"
     )
 
     return JsonResponse(payment_info)
@@ -512,12 +513,13 @@ def orderCustomerConfirm(request):
 
 def holdPaymentForm(request):
     order = ComposerOrder.objects.get(id=uuid.UUID(request.GET["id"]))
+    base_url = request.build_absolute_uri('/')[:-1]
     payment_info = createPaymentInfo(
         'hold',
         order.price,
         "Personal order payment",
         "personal_" + str(order.id),
-        "http://185.227.108.95/personal_order_hold_payment_callback/"
+        f"{base_url}/personal_order_hold_payment_callback/"
     )
     return render(request, 'store/hold_payment_form.html', payment_info)
 
@@ -806,12 +808,13 @@ def processOrder(request):
 def getCheckoutInfo(request):
     customer = request.user.customer
     order = Order.objects.get(customer=customer, complete=False)
+    base_url = request.build_absolute_uri('/')[:-1]
     checkout_info = createPaymentInfo(
         'pay',
         order.get_cart_total,
         "Product payment",
         "product_" + str(order.id),
-        "http://185.227.108.95/checkout_callback/"
+        f"{base_url}/checkout_callback/"
     )
 
     return JsonResponse(checkout_info)
